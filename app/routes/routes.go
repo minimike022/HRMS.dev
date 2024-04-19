@@ -8,6 +8,7 @@ import (
 func SetupRoutes(app *fiber.App) {
 	app.Get("/", routesData.GetData)
 	app.Post("/", routesData.PostData)
+	app.Get("/putData",routesData.PutData)
 }
 
 
