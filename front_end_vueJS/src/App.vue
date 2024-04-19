@@ -1,6 +1,13 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
 import axios from 'axios'
+
+
+const test = () => {
+  axios.get("http://localhost:3000/").then(res => console.log(res.data))
+}
+
+test()
 </script>
 
 <template>
