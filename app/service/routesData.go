@@ -10,7 +10,7 @@ type TryData struct {
 }
 
 func GetData(ctx *fiber.Ctx) error {
-	msg := "Hello world"
+	msg := "Hello, world"
 	return ctx.Status(fiber.StatusOK).JSON(msg)
 }
 
