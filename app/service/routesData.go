@@ -30,3 +30,10 @@ func PostData(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(data)
 
 }
+
+
+func PutData(ctx *fiber.Ctx) error {
+	msg := "Hello World"
+
+	return ctx.Status(fiber.StatusOK).JSON(msg)
+}
