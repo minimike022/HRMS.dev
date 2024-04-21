@@ -1,4 +1,4 @@
-package routesData
+package service
 
 import (
 	"fmt"
