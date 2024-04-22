@@ -11,8 +11,9 @@ import (
 // func GetData(ctx *fiber.Ctx) error {
 
 // }
+var db = Database.Connect()
 func ReadApplicantsData(ctx *fiber.Ctx) error  {
-	db := Database.Connect()
+	
 	appData := new(DataModels.ApplicantsData)
 	applicantsData := make([]DataModels.ApplicantsData, 0)
 
@@ -133,24 +134,24 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).SendString("Added to database!")
 }
 
-func GetApplicationStatus(ctx *fiber.Ctx) error {
-	appData := new(DataModels.ApplicantsData)
-	applicantsData := make([]DataModels.ApplicantsData, 0)
-	applicantID := ctx.Params("id")
+// func GetApplicationStatus(ctx *fiber.Ctx) error {
+// 	appData := new(DataModels.ApplicantsData)
+// 	applicantsData := make([]DataModels.ApplicantsData, 0)
+// 	applicantID := ctx.Params("id")
 
-	dbData, err := Database.Connect().Query("SELECT * FROM applicants_data WHERE applicant_id = ?", applicantID)
-	if err != nil {
-		panic(err.Error())
-	}
+// 	dbData, err := Database.Connect().Query("SELECT * FROM applicants_data WHERE applicant_id = ?", applicantID)
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
 
-	for dbData.Next() {
-		dbData.Scan(&appData.Applicant_ID,&appData.Position_ID,&appData.First_Name,&appData.Middle_Name,&appData.Last_Name,&appData.Extension_Name, &appData.Birthdate,
-			&appData.Age, &appData.Present_Address,&appData.Highest_Education, &appData.Email_Address, &appData.Facebook_Link, &appData.BPO_Exp,
-			&appData.Shift_Sched, &appData.Work_Report, &appData.Work_Site_Location, &appData.Platform_ID, &appData.Ref_Full_Name, &appData.Ref_Company,
-			&appData.Ref_Position, &appData.Ref_Contact_Num, &appData.Ref_Email, &appData.Applicant_CV, &appData.Applicant_Portfolio_Link)
-		applicantsData = append(applicantsData,*appData)
-	}
-	dbData.Close()
-	return ctx.Status(fiber.StatusOK).JSON(applicantsData)
-}
+// 	for dbData.Next() {
+// 		dbData.Scan(&appData.Applicant_ID,&appData.Position_ID,&appData.First_Name,&appData.Middle_Name,&appData.Last_Name,&appData.Extension_Name, &appData.Birthdate,
+// 			&appData.Age, &appData.Present_Address,&appData.Highest_Education, &appData.Email_Address, &appData.Facebook_Link, &appData.BPO_Exp,
+// 			&appData.Shift_Sched, &appData.Work_Report, &appData.Work_Site_Location, &appData.Platform_ID, &appData.Ref_Full_Name, &appData.Ref_Company,
+// 			&appData.Ref_Position, &appData.Ref_Contact_Num, &appData.Ref_Email, &appData.Applicant_CV, &appData.Applicant_Portfolio_Link)
+// 		applicantsData = append(applicantsData,*appData)
+// 	}
+// 	dbData.Close()
+// 	return ctx.Status(fiber.StatusOK).JSON(applicantsData)
+// }
 

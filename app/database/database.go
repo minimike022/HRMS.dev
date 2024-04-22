@@ -9,7 +9,7 @@ import (
 
 
 func Connect() *sql.DB{
-	dbConn, err := sql.Open("mysql","root:@tcp(localhost:3306)/recruitementms")
+	dbConn, err := sql.Open("mysql","root:@tcp(localhost:3306)/recruitmentms")
 
 	if err != nil {
 		panic(err.Error())
