@@ -25,42 +25,45 @@ type ApplicantsData struct {
 	Ref_Email  string
 	Applicant_CV string
 	Applicant_Portfolio_Link string
-
+	Applicant_Status_ID int
 }
 
 type ApplicantStatus struct {
-	Application_ID int
-	Applicant_ID int
-	Application_Status_ID int
-	User_Interviewee_ID int
-	Interview_Date string
-	Interview_Time string
+	Applicant_First_Name string
+	Applicant_Middle_Name string
+	Applicant_Last_Name string
 	Application_Status string
-}
-
-type DepartmentList struct {
-	Department_ID int
+	Job_Position_Name string
 	Department_Name string
-	Department_Status string
+	User_Interviewee_Name string
+	//Interview_Date string
+	//Interview_Time string
+	
 }
 
-type JobPosition struct {
-	Position_ID int
-	Position_Name string
-	Department_ID int
-	Position_Status string
-}
+// type DepartmentList struct {
+// 	Department_ID int
+// 	Department_Name string
+// 	Department_Status string
+// }
 
-type PostingPlatform struct {
-	Platform_ID int
-	Platform_Name string
-	Platform_Status string
-}
+// type JobPosition struct {
+// 	Position_ID int
+// 	Position_Name string
+// 	Department_ID int
+// 	Position_Status string
+// }
 
-type ApplicationStatusList struct {
-	Application_Status_ID int
-	Application_Status_Name string
-}
+// type PostingPlatform struct {
+// 	Platform_ID int
+// 	Platform_Name string
+// 	Platform_Status string
+// }
+
+// type ApplicationStatusList struct {
+// 	Application_Status_ID int
+// 	Application_Status_Name string
+// }
 
 type UserAccount struct {
 	Account_ID int
@@ -70,6 +73,6 @@ type UserAccount struct {
 	User_Name string
 	User_Position string
 	Department_ID int
-	Account_Satus string
+	Account_Status string
 }
 
