@@ -16,9 +16,8 @@ var db = Database.Connect()
 
 //All
 func ReadApplicantsData(ctx *fiber.Ctx) error {
-	appData := new(DataModels.ApplicantsData)
-	applicantsData := make([]DataModels.ApplicantsData, 0)
-	fmt.Println(appData)
+	applicants_data_model := new(DataModels.ApplicantsData)
+	applicants_data_array := make([]DataModels.ApplicantsData, 0)
 
 	dbRows, err := db.Query("SELECT * FROM applicants_data")
 	if err != nil {
@@ -27,73 +26,75 @@ func ReadApplicantsData(ctx *fiber.Ctx) error {
 
 	for dbRows.Next() {
 		dbRows.Scan(
-			&appData.Applicant_ID,
-			&appData.Position_ID,
-			&appData.First_Name,
-			&appData.Middle_Name,
-			&appData.Last_Name,
-			&appData.Extension_Name,
-			&appData.Birthdate,
-			&appData.Age,
-			&appData.Present_Address,
-			&appData.Highest_Education,
-			&appData.Email_Address,
-			&appData.Facebook_Link,
-			&appData.BPO_Exp,
-			&appData.Shift_Sched,
-			&appData.Work_Report,
-			&appData.Work_Site_Location,
-			&appData.Platform_ID,
-			&appData.Ref_Full_Name,
-			&appData.Ref_Company,
-			&appData.Ref_Position,
-			&appData.Ref_Contact_Num,
-			&appData.Ref_Email,
-			&appData.Applicant_CV,
-			&appData.Applicant_Portfolio_Link,
-			&appData.Applicant_Status_ID)
-		applicantsData = append(applicantsData, *appData)
+			&applicants_data_model.Applicant_ID,
+			&applicants_data_model.Position_ID,
+			&applicants_data_model.First_Name,
+			&applicants_data_model.Middle_Name,
+			&applicants_data_model.Last_Name,
+			&applicants_data_model.Extension_Name,
+			&applicants_data_model.Birthdate,
+			&applicants_data_model.Age,
+			&applicants_data_model.Present_Address,
+			&applicants_data_model.Highest_Education,
+			&applicants_data_model.Email_Address,
+			&applicants_data_model.Facebook_Link,
+			&applicants_data_model.BPO_Exp,
+			&applicants_data_model.Shift_Sched,
+			&applicants_data_model.Work_Report,
+			&applicants_data_model.Work_Site_Location,
+			&applicants_data_model.Platform_ID,
+			&applicants_data_model.Ref_Full_Name,
+			&applicants_data_model.Ref_Company,
+			&applicants_data_model.Ref_Position,
+			&applicants_data_model.Ref_Contact_Num,
+			&applicants_data_model.Ref_Email,
+			&applicants_data_model.Applicant_CV,
+			&applicants_data_model.Applicant_Portfolio_Link,
+			&applicants_data_model.Applicant_Status_ID)
+		applicants_data_array = append(applicants_data_array, *applicants_data_model)
 
 	}
-	fmt.Println(applicantsData)
-	return ctx.Status(fiber.StatusOK).JSON(applicantsData)
+	fmt.Println(applicants_data_array)
+	return ctx.Status(fiber.StatusOK).JSON(applicants_data_array)
 }
 
 //Guest
 func PostApplicantsData(ctx *fiber.Ctx) error {
-	var appData DataModels.ApplicantsData
+	applicants_data_model := DataModels.ApplicantsData{}
+	fmt.Println(applicants_data_model)
 	//db := Database.Connect()
-	applicationData := new(DataModels.ApplicantsData)
-	err := ctx.BodyParser(applicationData)
+	applicants_data := new(DataModels.ApplicantsData)
+	fmt.Println(applicants_data)
+	err := ctx.BodyParser(applicants_data)
 
 	if err != nil {
 		panic(err.Error())
 	}
 
-	appData = DataModels.ApplicantsData{
-		Position_ID:              applicationData.Position_ID,
-		First_Name:               applicationData.First_Name,
-		Middle_Name:              applicationData.Middle_Name,
-		Last_Name:                applicationData.Last_Name,
-		Extension_Name:           applicationData.Extension_Name,
-		Birthdate:                applicationData.Birthdate,
-		Age:                      applicationData.Age,
-		Present_Address:          applicationData.Present_Address,
-		Highest_Education:        applicationData.Highest_Education,
-		Email_Address:            applicationData.Email_Address,
-		Facebook_Link:            applicationData.Facebook_Link,
-		BPO_Exp:                  applicationData.BPO_Exp,
-		Shift_Sched:              applicationData.Shift_Sched,
-		Work_Report:              applicationData.Work_Report,
-		Work_Site_Location:       applicationData.Work_Site_Location,
-		Platform_ID:              applicationData.Platform_ID,
-		Ref_Full_Name:            applicationData.Ref_Full_Name,
-		Ref_Company:              applicationData.Ref_Company,
-		Ref_Position:             applicationData.Ref_Position,
-		Ref_Contact_Num:          applicationData.Ref_Contact_Num,
-		Ref_Email:                applicationData.Ref_Email,
-		Applicant_CV:             applicationData.Applicant_CV,
-		Applicant_Portfolio_Link: applicationData.Applicant_Portfolio_Link,
+	applicants_data_model = DataModels.ApplicantsData{
+		Position_ID:              applicants_data.Position_ID,
+		First_Name:               applicants_data.First_Name,
+		Middle_Name:              applicants_data.Middle_Name,
+		Last_Name:                applicants_data.Last_Name,
+		Extension_Name:           applicants_data.Extension_Name,
+		Birthdate:                applicants_data.Birthdate,
+		Age:                      applicants_data.Age,
+		Present_Address:          applicants_data.Present_Address,
+		Highest_Education:        applicants_data.Highest_Education,
+		Email_Address:            applicants_data.Email_Address,
+		Facebook_Link:            applicants_data.Facebook_Link,
+		BPO_Exp:                  applicants_data.BPO_Exp,
+		Shift_Sched:              applicants_data.Shift_Sched,
+		Work_Report:              applicants_data.Work_Report,
+		Work_Site_Location:       applicants_data.Work_Site_Location,
+		Platform_ID:              applicants_data.Platform_ID,
+		Ref_Full_Name:            applicants_data.Ref_Full_Name,
+		Ref_Company:              applicants_data.Ref_Company,
+		Ref_Position:             applicants_data.Ref_Position,
+		Ref_Contact_Num:          applicants_data.Ref_Contact_Num,
+		Ref_Email:                applicants_data.Ref_Email,
+		Applicant_CV:             applicants_data.Applicant_CV,
+		Applicant_Portfolio_Link: applicants_data.Applicant_Portfolio_Link,
 	}
 	dbQuery := `INSERT INTO applicants_data (
 				position_id, 
@@ -127,30 +128,29 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 			)`
 
 	dbData, err := Database.Connect().Query(dbQuery,
-		appData.Position_ID,
-		appData.First_Name,
-		appData.Middle_Name,
-		appData.Last_Name,
-		appData.Extension_Name,
-		appData.Birthdate,
-		appData.Age,
-		appData.Present_Address,
-		appData.Highest_Education,
-		appData.Email_Address,
-		appData.Facebook_Link,
-		appData.BPO_Exp,
-		appData.Shift_Sched,
-		appData.Work_Report,
-		appData.Work_Site_Location,
-		appData.Platform_ID,
-		appData.Ref_Full_Name,
-		appData.Ref_Company,
-		appData.Ref_Position,
-		appData.Ref_Contact_Num,
-		appData.Ref_Email,
-		appData.Applicant_CV,
-		appData.Applicant_Portfolio_Link)
-
+		applicants_data_model.Position_ID,
+		applicants_data_model.First_Name,
+		applicants_data_model.Middle_Name,
+		applicants_data_model.Last_Name,
+		applicants_data_model.Extension_Name,
+		applicants_data_model.Birthdate,
+		applicants_data_model.Age,
+		applicants_data_model.Present_Address,
+		applicants_data_model.Highest_Education,
+		applicants_data_model.Email_Address,
+		applicants_data_model.Facebook_Link,
+		applicants_data_model.BPO_Exp,
+		applicants_data_model.Shift_Sched,
+		applicants_data_model.Work_Report,
+		applicants_data_model.Work_Site_Location,
+		applicants_data_model.Platform_ID,
+		applicants_data_model.Ref_Full_Name,
+		applicants_data_model.Ref_Company,
+		applicants_data_model.Ref_Position,
+		applicants_data_model.Ref_Contact_Num,
+		applicants_data_model.Ref_Email,
+		applicants_data_model.Applicant_CV,
+		applicants_data_model.Applicant_Portfolio_Link)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -176,13 +176,13 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 	INNER JOIN department ON job_position.department_id = department.department_id
 	INNER JOIN user_accounts ON job_position.department_id = user_accounts.department_id`
 
-	dbData, err := Database.Connect().Query(query)
+	db_response, err := Database.Connect().Query(query)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	for dbData.Next() {
-		dbData.Scan(
+	for db_response.Next() {
+		db_response.Scan(
 			&app_status_data.Applicant_First_Name,
 			&app_status_data.Applicant_Middle_Name,
 			&app_status_data.Applicant_Last_Name,
@@ -194,7 +194,7 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 		app_status_model = append(app_status_model, *app_status_data)
 
 	}
-	dbData.Close()
+	defer db_response.Close()
 	return ctx.Status(fiber.StatusOK).JSON(app_status_model)
 }
 
@@ -252,10 +252,10 @@ func AddUserAccount(ctx *fiber.Ctx) error {
 		Account_Status: user_account.Account_Status,
 	}
 
-	query := `INSERT INTO user_accounts (username, password, user_role, user_name, user_position, department_id)
+	db_query := `INSERT INTO user_accounts (username, password, user_role, user_name, user_position, department_id)
 	VALUES (?,?,?,?,?,?)`
 	
-	db_query, err := db.Query(query, 
+	db_response, err := db.Query(db_query, 
 		user_account_data.Username,
 		user_account.Password,
 		user_account.User_Role,
@@ -266,7 +266,7 @@ func AddUserAccount(ctx *fiber.Ctx) error {
 	if err != nil {
 		panic(err.Error())
 	}
-	defer db_query.Close()
+	defer db_response.Close()
 
 	return ctx.Status(fiber.StatusOK).SendString("User Added!")
 }
@@ -276,15 +276,15 @@ func ReadUserAccounts(ctx *fiber.Ctx) error {
 	user_accounts_data := new(DataModels.UserAccount)
 	user_accounts_array := make([]DataModels.UserAccount,0)
 
-	query := "SELECT * FROM user_accounts"
+	db_query := "SELECT * FROM user_accounts"
 
-	db_query, err := db.Query(query)
+	db_response, err := db.Query(db_query)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	for db_query.Next() {
-		db_query.Scan(
+	for db_response.Next() {
+		db_response.Scan(
 			&user_accounts_data.Account_ID,
 			&user_accounts_data.Username,
 			&user_accounts_data.Password,
@@ -297,24 +297,23 @@ func ReadUserAccounts(ctx *fiber.Ctx) error {
 		user_accounts_array = append(user_accounts_array, *user_accounts_data)
 
 	}
-	db_query.Close()
+	defer db_response.Close()
 	
 	return ctx.Status(fiber.StatusOK).JSON(user_accounts_array)
 }
 
 func ChangeAccountStatus(ctx *fiber.Ctx) error {
-	user_account_id := ctx.Params("account_id")
-	account_status := "Active"
+	user_account_id := ctx.Params("id")
+	account_status := "Inactive"
 
-	query := `UPDATE TABLE user_accounts
+	query := `UPDATE user_accounts
 	SET account_status = ?
 	WHERE account_id = ?
 	`
-	db_query, err := db.Query(query, account_status, user_account_id)
+	_, err := db.Query(query, account_status, user_account_id)
 	if err != nil{
 		panic(err.Error())
 	}
-	defer db_query.Close()
 
-	return ctx.Status(fiber.StatusOK).JSON(db_query)
+	return ctx.Status(fiber.StatusOK).SendString("Updated")
 }
