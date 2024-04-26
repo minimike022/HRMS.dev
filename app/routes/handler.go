@@ -12,6 +12,8 @@ func SetupRoutes(app *fiber.App) {
 	app.Post("/user_account/add", service.AddUserAccount)
 	app.Get("/user_account", service.ReadUserAccounts)
 	app.Patch("/user_account/change_status/:id", service.ChangeAccountStatus)
+	app.Get("/application/manager/:id", service.ManagerApplicantsData)
+	app.Get("/application/source", service.GetSourceData)
 }
 
 

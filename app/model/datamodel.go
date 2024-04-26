@@ -29,6 +29,7 @@ type ApplicantsData struct {
 }
 
 type ApplicantStatus struct {
+	Applicant_ID int
 	Applicant_First_Name string
 	Applicant_Middle_Name string
 	Applicant_Last_Name string
@@ -54,11 +55,12 @@ type ApplicantStatus struct {
 // 	Position_Status string
 // }
 
-// type PostingPlatform struct {
-// 	Platform_ID int
-// 	Platform_Name string
-// 	Platform_Status string
-// }
+type PostingPlatform struct {
+	Platform_ID int
+	Platform_Name string
+	Platform_Count int
+	Platform_Status string
+}
 
 // type ApplicationStatusList struct {
 // 	Application_Status_ID int
