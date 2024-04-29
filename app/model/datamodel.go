@@ -26,6 +26,7 @@ type ApplicantsData struct {
 	Applicant_CV string
 	Applicant_Portfolio_Link string
 	Applicant_Status_ID int
+	Application_CreatedAt string
 }
 
 type ApplicantStatus struct {
@@ -36,7 +37,8 @@ type ApplicantStatus struct {
 	Application_Status string
 	Job_Position_Name string
 	Department_Name string
-	User_Interviewee_Name string
+	User_Interviewee_Name string	
+	Application_Status_ID int
 	//Interview_Date string
 	//Interview_Time string
 	
@@ -48,12 +50,14 @@ type ApplicantStatus struct {
 // 	Department_Status string
 // }
 
-// type JobPosition struct {
-// 	Position_ID int
-// 	Position_Name string
-// 	Department_ID int
-// 	Position_Status string
-// }
+type JobPosition struct {
+	Position_ID int
+	Position_Name string
+	Department_ID int
+	Position_Status string
+	Available_Slot int
+	
+}
 
 type PostingPlatform struct {
 	Platform_ID int
@@ -76,6 +80,7 @@ type UserAccount struct {
 	User_Position string
 	Department_ID int
 	Account_Status string
+	CreatedAt string
 }
 
 

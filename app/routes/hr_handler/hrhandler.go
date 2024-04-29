@@ -7,5 +7,7 @@ import (
 
 func SetupHRhandler(app *fiber.App) {
 	app.Get("/applicants", hrpkg.GetApplicantsData)
-	app.Get("/analysis", hrpkg.GetSourceData)
+	app.Get("/application/status", hrpkg.GetApplicationStatus)
+	app.Post("/jobs/position/add", hrpkg.AddJobPosition)
+	app.Patch("/jobs/position/update/:id", hrpkg.UpdateJobPosition)
 }
