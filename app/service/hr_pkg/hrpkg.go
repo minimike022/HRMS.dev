@@ -3,9 +3,6 @@ package hrpkg
 import (
 	Database "hrms-api/app/database"
 	DataModels "hrms-api/app/model"
-
-	//"github.com/golang-jwt/jwt/v5"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -48,7 +45,6 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Ref_Email,
 			&applicants_data_model.Applicant_CV,
 			&applicants_data_model.Applicant_Portfolio_Link,
-			&applicants_data_model.Applicant_Status_ID,
 			&applicants_data_model.Application_CreatedAt,
 		)
 		applicants_data_array = append(applicants_data_array, *applicants_data_model)

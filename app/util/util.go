@@ -1,17 +1,23 @@
 package util
 
 import (
-	"fmt"
 	Database "hrms-api/app/database"
 	DataModels "hrms-api/app/model"
 	"time"
-
+	jwtware "github.com/gofiber/contrib/jwt"
+	jwt "hrms-api/app/service/jwt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+
 )
 var jwtSecret = "143"
 var db = Database.Connect()
+
+func JwtAuth() func(ctx *fiber.Ctx) error {
+	return jwtware.New(jwtware.Config{
+		SigningKey: jwtware.SigningKey{Key: []byte(jwtSecret)},
+	})
+} 
 
 func UpdateApplicationStatus(ctx *fiber.Ctx) error {
 	updated_at := time.Now().Format("2006-01-02 15:04:05") 
@@ -103,19 +109,14 @@ func Login(ctx *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println("Matched")
-	
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["id"] = login_account_model.Account_ID
-	
-	tokenString, err := token.SignedString([]byte(jwtSecret))
-
-	if err !=nil {
-		ctx.SendStatus(fiber.StatusInternalServerError)
+	tokenString, err := jwt.GenerateToken(login_account_model.User_Name, login_account_model.Account_ID)
+	if err != nil {
+		ctx.Status(fiber.StatusUnauthorized)
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"token": tokenString})
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"token": tokenString,
+	})
 }
 
 func GetPlatformData(ctx *fiber.Ctx) error {
