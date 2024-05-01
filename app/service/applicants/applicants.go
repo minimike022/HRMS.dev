@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	//jwt "hrms-api/app/service/jwt"
 )
-
 var db = Database.Connect()
 
 
@@ -56,6 +56,8 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 }
 
 func GetApplicantsData(ctx *fiber.Ctx) error {
+
+
 	applicants_data_model := new(model_applicants.ApplicantsData)
 	applicants_data_array := make([]model_applicants.ApplicantsData, 0)
 
@@ -67,7 +69,7 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 	}
 
 	for db_response.Next() {
-		db_response.Scan(
+		db_response.Scan(	
 			&applicants_data_model.Applicant_ID,
 			&applicants_data_model.Position_ID,
 			&applicants_data_model.First_Name,

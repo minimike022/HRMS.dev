@@ -33,7 +33,7 @@ func Login(ctx *fiber.Ctx) error {
 	err = util.CompareHash(store_password, login_account_model.Password)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid Username or Password",
+			"error" : "Status Unauthorized",
 		})
 	}
 
