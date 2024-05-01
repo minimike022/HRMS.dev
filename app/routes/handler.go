@@ -1,19 +1,19 @@
 package route
 
 import (
-	//service "hrms-api/app/service"
+	hanalysis "hrms-api/app/routes/analysis"
+	happlication "hrms-api/app/routes/applicants"
+	hjobs "hrms-api/app/routes/jobs"
+	husers "hrms-api/app/routes/users"
+
 	"github.com/gofiber/fiber/v2"
-	hrhandler "hrms-api/app/routes/hr_handler"
-	hmhandler "hrms-api/app/routes/hm_handler"
-	adminhandler "hrms-api/app/routes/admin_handler"
-	utilhandler "hrms-api/app/routes/util_handler"
 )
 
 func SetupRoutes(app *fiber.App) {
-	hrhandler.SetupHRhandler(app)
-	hmhandler.SetupHMhandler(app)
-	adminhandler.SetupAdminhandler(app)
-	utilhandler.SetupUtilHandler(app)
+	hjobs.SetupJobs(app)
+	happlication.SetupApplication(app)
+	hanalysis.SetupAnalysis(app)
+	husers.SetupUserAccounts(app)
 }
 
 

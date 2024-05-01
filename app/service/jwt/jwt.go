@@ -18,3 +18,4 @@ func GenerateToken(user_name string, id int) (string, error) {
 	
 	return token.SignedString([]byte(jwtSecret))
 }
+
