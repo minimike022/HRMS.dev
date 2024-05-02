@@ -3,10 +3,10 @@ package applicants
 import (
 	Database "hrms-api/app/database"
 	model_applicants "hrms-api/app/model/applicants"
+	//jwt "hrms-api/app/service/jwt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	//jwt "hrms-api/app/service/jwt"
 )
 var db = Database.Connect()
 
@@ -57,6 +57,15 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 
 func GetApplicantsData(ctx *fiber.Ctx) error {
 
+	// claims, err := jwt.ParseToken(ctx)
+
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+
+	// id := claims["id"]
+
+	// fmt.Print(id)
 
 	applicants_data_model := new(model_applicants.ApplicantsData)
 	applicants_data_array := make([]model_applicants.ApplicantsData, 0)
