@@ -5,6 +5,7 @@ import (
 	model_users "hrms-api/app/model/users"
 	jwt "hrms-api/app/service/jwt"
 	util "hrms-api/app/util"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -27,22 +28,49 @@ func Login(ctx *fiber.Ctx) error {
 	}
 	
 	for db_response.Next() {
-		db_response.Scan(&login_account_model.Account_ID, &login_account_model.Username, &store_password)
+		db_response.Scan(
+			&login_account_model.Account_ID, 
+			&login_account_model.Username, 
+			&store_password, 
+			&login_account_model.User_Role, 
+			&login_account_model.User_Name)
 	}
 
 	err = util.CompareHash(store_password, login_account_model.Password)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error" : "Status Unauthorized",
+			"error" : "Incorrect Username or Password",
 		})
 	}
 
-	tokenString, err := jwt.GenerateToken(login_account_model.User_Name, login_account_model.Account_ID)
+	refresh_token, err := jwt.GenerateRefreshToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
 	if err != nil {
-		ctx.Status(fiber.StatusUnauthorized)
+		ctx.Status(fiber.StatusInternalServerError)
 	}
 
+	access_token, err := jwt.GenerateRefreshToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
+	if err != nil {
+		ctx.Status(fiber.StatusInternalServerError)
+	}
+
+	refresh_cookie := fiber.Cookie {
+		Name: "refresh_token",
+		Value: refresh_token,
+		Expires: time.Now().Add(time.Hour * 24),
+		HTTPOnly: true,
+	}
+
+	access_cookie := fiber.Cookie {
+		Name: "access_token",
+		Value: access_token,
+		Expires: time.Now().Add(time.Minute * 15),
+		HTTPOnly: true,
+	}
+
+	ctx.Cookie(&refresh_cookie)
+	ctx.Cookie(&access_cookie)
+
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"token": tokenString,
+		"message" : "Logged In",
 	})
 }

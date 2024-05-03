@@ -50,22 +50,13 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	defer dbData.Close()
 
 	return ctx.Status(fiber.StatusOK).SendString("Added to database!")
 }
 
 func GetApplicantsData(ctx *fiber.Ctx) error {
-
-	// claims, err := jwt.ParseToken(ctx)
-
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-
-	// id := claims["id"]
-
-	// fmt.Print(id)
 
 	applicants_data_model := new(model_applicants.ApplicantsData)
 	applicants_data_array := make([]model_applicants.ApplicantsData, 0)

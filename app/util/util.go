@@ -14,3 +14,14 @@ func CompareHash(stored_password string, forms_password string) error {
 	return err
 }
 
+func EncryptToken() {
+
+}
+
+
+func DecryptToken() {
+
+}
+
+
+
