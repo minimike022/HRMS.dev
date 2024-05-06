@@ -3,10 +3,9 @@ package login
 import (
 	Database "hrms-api/app/database"
 	model_users "hrms-api/app/model/users"
-	jwt "hrms-api/app/service/jwt"
+	generatejwt "hrms-api/app/service/jwt/generate"
 	util "hrms-api/app/util"
 	"time"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -43,12 +42,12 @@ func Login(ctx *fiber.Ctx) error {
 		})
 	}
 
-	refresh_token, err := jwt.GenerateRefreshToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
+	refresh_token, err := generatejwt.GenerateRefreshToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
 	if err != nil {
 		ctx.Status(fiber.StatusInternalServerError)
 	}
 
-	access_token, err := jwt.GenerateAccessToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
+	access_token, err := generatejwt.GenerateAccessToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
 	if err != nil {
 		ctx.Status(fiber.StatusInternalServerError)
 	}

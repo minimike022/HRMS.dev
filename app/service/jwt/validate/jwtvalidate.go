@@ -1,7 +1,7 @@
 package jwtvalidate
 
 import (
-	jwtgenerate "hrms-api/app/service/jwt"
+	generatejwt "hrms-api/app/service/jwt/generate"
 	parsejwt "hrms-api/app/service/jwt/parse"
 	"os"
 	"time"
@@ -64,6 +64,8 @@ func ValidateAccessToken(ctx *fiber.Ctx) error {
 	if time.Until(access_exp_timef) <= 0 {
 		RenewAccessToken(ctx)
 	}
+
+	ctx.Locals("claims", claims)
 	
 	return ctx.Next()
 }
@@ -96,7 +98,7 @@ func RenewAccessToken(ctx *fiber.Ctx) error {
 	}
 
 	//Generate  Access Token
-	access_token, _ := jwtgenerate.GenerateAccessToken(user_name, int(id), user_role)
+	access_token, _ := generatejwt.GenerateAccessToken(user_name, int(id), user_role)
 
 	cookie := fiber.Cookie {
 		Name: "access_token",

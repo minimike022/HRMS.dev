@@ -1,4 +1,4 @@
-package jwtgenerate
+package generatejwt
 
 import (
 	"os"
