@@ -48,7 +48,7 @@ func Login(ctx *fiber.Ctx) error {
 		ctx.Status(fiber.StatusInternalServerError)
 	}
 
-	access_token, err := jwt.GenerateRefreshToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
+	access_token, err := jwt.GenerateAccessToken(login_account_model.User_Name, login_account_model.Account_ID, login_account_model.User_Role)
 	if err != nil {
 		ctx.Status(fiber.StatusInternalServerError)
 	}

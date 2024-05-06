@@ -5,16 +5,45 @@ import (
 	parsejwt "hrms-api/app/service/jwt/parse"
 	"os"
 	"time"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 func ValidateRefreshToken(ctx *fiber.Ctx) error {
-	auth := parsejwt.ParseRefreshToken(ctx)
+	refresh_auth := parsejwt.ParseRefreshToken(ctx)
 
-	_, err := jwt.ParseWithClaims(auth, jwt.MapClaims{}, func(t *jwt.Token)(interface{}, error) {
+	refresh_token, err := jwt.ParseWithClaims(refresh_auth, jwt.MapClaims{}, func(t *jwt.Token)(interface{}, error) {
 		return []byte(os.Getenv("REFRESH_TOKEN_KEY")), nil
+	})
+
+	claims := refresh_token.Claims.(jwt.MapClaims)
+	refresh_exp_time := claims["exp"].(float64)
+	refresh_exp_timef := time.Unix(int64(refresh_exp_time),0)
+
+	if time.Until(refresh_exp_timef) <= 0 {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"Error" : "Token Expired",
+		})
+	}
+
+	if err != nil {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized",
+		})
+	}
+
+	ctx.Locals("claims", claims)
+
+	return ctx.Next()
+}
+
+func ValidateAccessToken(ctx *fiber.Ctx) error {
+	//Fetch Token from Parsing Cookies
+	access_auth := parsejwt.ParseAccessToken(ctx)
+
+	//Parse token with payloads
+	access_token, err := jwt.ParseWithClaims(access_auth, jwt.MapClaims{}, func(t *jwt.Token)(interface{},error) {
+		return []byte(os.Getenv("ACCESS_TOKEN_KEY")), nil
 	})
 
 	if err != nil {
@@ -23,59 +52,51 @@ func ValidateRefreshToken(ctx *fiber.Ctx) error {
 		})
 	}
 
-	return ctx.Next()
-}
+	claims := access_token.Claims.(jwt.MapClaims)
 
-func ValidateAccessToken(ctx *fiber.Ctx) error {
-	auth := parsejwt.ParseAccessToken(ctx)
+	//Fetch access_exp from jwt claims
+	access_exp_time := claims["exp"].(float64)
 
-	token, err := jwt.ParseWithClaims(auth, jwt.MapClaims{}, func(t *jwt.Token)(interface{},error) {
-		return []byte(os.Getenv("ACCESS_TOKEN_KEY")), nil
-	})
+	//Convert float64 to UNIX TIME FORMAT
+	access_exp_timef := time.Unix(int64(access_exp_time),0)
 
-	if err != nil {
-		ctx.Status(fiber.StatusUnauthorized)
+	//Validate if access token is expired
+	if time.Until(access_exp_timef) <= 0 {
+		RenewAccessToken(ctx)
 	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		return ctx.SendStatus(fiber.StatusInternalServerError)
-	}
-	// expiration_time := claims["exp"].(float64)
-
-	// if time.Unix(int64(expiration_time), 0) > time.Now()
-
-	RenewAccessToken(ctx)
 	
-	ctx.Locals("claims", claims)
-
 	return ctx.Next()
 }
 
 func RenewAccessToken(ctx *fiber.Ctx) error {
 	//Get the refresh token cookie
-	auth := parsejwt.ParseRefreshToken(ctx)
-
-
+	refresh_auth := parsejwt.ParseRefreshToken(ctx)
 	//Parse refresh token
-	token, _ := jwt.ParseWithClaims(auth, jwt.MapClaims{}, func(t *jwt.Token) (interface{}, error) {
+	refresh_token, _ := jwt.ParseWithClaims(refresh_auth, jwt.MapClaims{}, func(t *jwt.Token) (interface{}, error) {
 		return []byte("REFRESH_TOKEN_KEY"), nil
 	})
 
-	claims := token.Claims.(jwt.MapClaims)
+	claims := refresh_token.Claims.(jwt.MapClaims)
 
+	//Fetched claims data from refresh_token
 	id := claims["id"].(float64)
 	user_name:= claims["user_name"].(string)
 	user_role := claims["user_role"].(string)
 
-	access_token, err := jwtgenerate.GenerateAccessToken(user_name, int(id), user_role)
+	//Fetch expiration time from jwtclaims
+	refresh_exp := claims["exp"].(float64)
+	//Convert Float64 to UNIX TIME FORMAT
+	refresh_exp_unix := time.Unix(int64(refresh_exp), 0)
 
-	if err != nil {
-		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map {
-			"error" : "Invalid Token",
+	//Validate if token is not expired
+	if time.Until(refresh_exp_unix) <= 0 {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error" : "Token Expired",
 		})
 	}
+
+	//Generate  Access Token
+	access_token, _ := jwtgenerate.GenerateAccessToken(user_name, int(id), user_role)
 
 	cookie := fiber.Cookie {
 		Name: "access_token",

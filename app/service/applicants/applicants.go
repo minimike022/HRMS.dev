@@ -3,6 +3,7 @@ package applicants
 import (
 	Database "hrms-api/app/database"
 	model_applicants "hrms-api/app/model/applicants"
+
 	//jwt "hrms-api/app/service/jwt"
 	"time"
 
@@ -102,5 +103,7 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 	defer db_response.Close()
 
 
-	return ctx.Status(fiber.StatusOK).JSON(applicants_data_array)
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"applicants_data": applicants_data_array,
+	})
 }

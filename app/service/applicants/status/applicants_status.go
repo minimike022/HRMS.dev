@@ -4,7 +4,6 @@ import (
 	Database "hrms-api/app/database"
 	model_applicants "hrms-api/app/model/applicants"
 	"time"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -36,7 +35,9 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 
 	}
 	defer db_response.Close()
-	return ctx.Status(fiber.StatusOK).JSON(app_status_model)
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status": app_status_model,
+	})
 }
 
 func UpdateApplicationStatus(ctx *fiber.Ctx) error {

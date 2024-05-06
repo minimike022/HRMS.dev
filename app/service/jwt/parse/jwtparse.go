@@ -12,6 +12,5 @@ func ParseRefreshToken(ctx *fiber.Ctx) string{
 
 func ParseAccessToken(ctx *fiber.Ctx) string {
 	access_cookie := ctx.Cookies("access_token")
-
 	return access_cookie
 }

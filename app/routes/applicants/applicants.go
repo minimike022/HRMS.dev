@@ -5,10 +5,12 @@ import (
 	applicantsStatus "hrms-api/app/service/applicants/status"
 	"github.com/gofiber/fiber/v2"
 	jwtvalidate "hrms-api/app/service/jwt/validate"
+	validaterole "hrms-api/app/service/users/validate"
 )
 
 func SetupApplication(app *fiber.App) {
 	app.Post("/applicants/add", applicants.PostApplicantsData)
-	app.Get("/applicants", jwtvalidate.ValidateRefreshToken,applicants.GetApplicantsData)
-	app.Get("/application/status", jwtvalidate.ValidateAccessToken, applicantsStatus.GetApplicationStatus)
+	app.Get("/applicants", jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR ,applicants.GetApplicantsData)
+	app.Get("/application/status", jwtvalidate.ValidateRefreshToken, validaterole.ValidateAdmin, applicantsStatus.GetApplicationStatus)
+	app.Get("/application/manager", jwtvalidate.ValidateAccessToken, applicantsStatus.GetApplicationStatus)
 }

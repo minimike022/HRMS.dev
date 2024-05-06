@@ -54,11 +54,7 @@ func AddUserAccount(ctx *fiber.Ctx) error {
 	}
 
 	//Password Hashing
-	var user_hashed_password= util.HashedPassword(user_account_data.Password)
-
-	if err != nil {
-		panic(err.Error())
-	}
+	var user_hashed_password = util.HashedPassword(user_account_data.Password)
 
 	//Calling Procedured Query
 	db_query := `CALL add_user_accounts(?,?,?,?,?,?,?)`
