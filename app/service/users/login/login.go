@@ -6,6 +6,7 @@ import (
 	generatejwt "hrms-api/app/service/jwt/generate"
 	util "hrms-api/app/util"
 	"time"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,7 +16,9 @@ var db = Database.Connect()
 func Login(ctx *fiber.Ctx) error {
 	var store_password string
 	login_account_model := model_users.UserAccount{}
-	err := ctx.BodyParser(&login_account_model) 
+	
+	err := ctx.BodyParser(&login_account_model)
+	fmt.Print("Hello World", ctx.Body())
 	if err != nil {
 		panic(err.Error())
 	}
@@ -70,6 +73,7 @@ func Login(ctx *fiber.Ctx) error {
 	ctx.Cookie(&access_cookie)
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message" : "Logged In",
+		"access_cookie" : access_cookie,
+		"refresh_cookie" : refresh_cookie,
 	})
 }
