@@ -10,7 +10,9 @@ import (
 
 func SetupApplication(app *fiber.App) {
 	app.Post("/applicants/add", applicants.PostApplicantsData)
-	app.Get("/applicants", jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR ,applicants.GetApplicantsData)
+	app.Get("/applicants",applicants.GetApplicantsData)
 	app.Get("/application/status", jwtvalidate.ValidateRefreshToken, validaterole.ValidateAdmin, applicantsStatus.GetApplicationStatus)
 	app.Get("/application/manager", jwtvalidate.ValidateAccessToken, applicantsStatus.GetApplicationStatus)
 }
+
+//, jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR 

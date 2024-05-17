@@ -2,8 +2,8 @@ package model_users
 
 type UserAccount struct {
 	Account_ID int
-	Username string
-	Password string
+	Username string 
+	Password string 
 	User_Role string
 	User_Name string
 	User_Position string
