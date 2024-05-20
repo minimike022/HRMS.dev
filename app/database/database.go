@@ -17,4 +17,3 @@ func Connect() *sql.DB{
 	fmt.Println("Database Connected")
 	return dbConn
 }
-

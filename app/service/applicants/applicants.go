@@ -1,6 +1,7 @@
 package applicants
 
 import (
+	"fmt"
 	Database "hrms-api/app/database"
 	model_applicants "hrms-api/app/model/applicants"
 
@@ -39,7 +40,7 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 		applicants_data_model.Shift_Sched,
 		applicants_data_model.Work_Report,
 		applicants_data_model.Work_Site_Location,
-		applicants_data_model.Platform_ID,
+		applicants_data_model.Platforms,
 		applicants_data_model.Ref_Full_Name,
 		applicants_data_model.Ref_Company,
 		applicants_data_model.Ref_Position,
@@ -72,7 +73,6 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 	for db_response.Next() {
 		db_response.Scan(	
 			&applicants_data_model.Applicant_ID,
-			&applicants_data_model.Position_ID,
 			&applicants_data_model.First_Name,
 			&applicants_data_model.Middle_Name,
 			&applicants_data_model.Last_Name,
@@ -80,14 +80,18 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Birthdate,
 			&applicants_data_model.Age,
 			&applicants_data_model.Present_Address,
-			&applicants_data_model.Highest_Education,
+			&applicants_data_model.Mobile_Number,
 			&applicants_data_model.Email_Address,
 			&applicants_data_model.Facebook_Link,
+			&applicants_data_model.Position_Name,
 			&applicants_data_model.BPO_Exp,
 			&applicants_data_model.Shift_Sched,
 			&applicants_data_model.Work_Report,
 			&applicants_data_model.Work_Site_Location,
-			&applicants_data_model.Platform_ID,
+			&applicants_data_model.Highest_Education,
+			&applicants_data_model.Degree_Course,
+			&applicants_data_model.School_Name,
+			&applicants_data_model.Platforms,
 			&applicants_data_model.Ref_Full_Name,
 			&applicants_data_model.Ref_Company,
 			&applicants_data_model.Ref_Position,
@@ -98,6 +102,7 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Application_CreatedAt,
 		)
 		applicants_data_array = append(applicants_data_array, *applicants_data_model)
+		fmt.Print(applicants_data_array)
 	}
 	
 	defer db_response.Close()

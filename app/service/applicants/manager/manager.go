@@ -41,7 +41,7 @@ func ManagerApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Shift_Sched,
 			&applicants_data_model.Work_Report,
 			&applicants_data_model.Work_Site_Location,
-			&applicants_data_model.Platform_ID,
+			&applicants_data_model.Platforms,
 			&applicants_data_model.Ref_Full_Name,
 			&applicants_data_model.Ref_Company,
 			&applicants_data_model.Ref_Position,
@@ -49,7 +49,7 @@ func ManagerApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Ref_Email,
 			&applicants_data_model.Applicant_CV,
 			&applicants_data_model.Applicant_Portfolio_Link,
-			&applicants_data_model.Applicant_Status_ID)
+	)
 			applicants_data_array = append(applicants_data_array, *applicants_data_model)
 
 	}

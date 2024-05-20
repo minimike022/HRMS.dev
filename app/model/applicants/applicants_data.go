@@ -1,46 +1,36 @@
 package model_applicants
 
 type ApplicantsData struct {
-	Applicant_ID   int
-	Position_ID    int
-	First_Name     string
-	Middle_Name    string
-	Last_Name      string
-	Extension_Name string
-	Birthdate      string
-	Age int
-	Present_Address string
-	Highest_Education string
-	Email_Address string
-	Facebook_Link string
-	BPO_Exp string
-	Shift_Sched string
-	Work_Report string
-	Work_Site_Location string
-	Platform_ID int
-	Ref_Full_Name string
-	Ref_Company string
-	Ref_Position string
-	Ref_Contact_Num string
-	Ref_Email  string
+	Applicant_ID   int `json:"applicant_id"`
+	Position_ID    int `json:"position_id"`
+	Position_Name    string `json:"position_name"`
+	First_Name     string `json:"first_name"`
+	Middle_Name    string `json:"middle_name"`
+	Last_Name      string `json:"last_name"`
+	Extension_Name string `json:"extension_name"`
+	Birthdate      string `json:"birthdate"`
+	Age int `json:"age"` 
+	Present_Address string `json:"present_address"`
+	Highest_Education string `json:"highest_education"`
+	Degree_Course string `json:"degree_course"`
+	School_Name string `json:"school_name"`
+	Mobile_Number string `json:"mobile_number"`
+	Email_Address string `json:"email_address"`
+	Facebook_Link string `json:"facebook_link"`
+	BPO_Exp string `json:"bpo_exp"`
+	Shift_Sched string `json:"shift_sched"`
+	Work_Report string `json:"work_report"`
+	Work_Site_Location string `json:"work_site_location"`
+	Platforms string `json:"platforms"`
+	Ref_Full_Name string `json:"ref_full_name"`
+	Ref_Company string `json:"ref_company"`
+	Ref_Position string `json:"ref_position"`
+	Ref_Contact_Num string `json:"ref_contact_num"`
+	Ref_Email  string `json:"ref_email"`
 	Applicant_CV string
 	Applicant_Portfolio_Link string
-	Applicant_Status_ID int
 	Application_CreatedAt string
 }
 
-type ApplicantStatus struct {
-	Applicant_ID int
-	Applicant_First_Name string
-	Applicant_Middle_Name string
-	Applicant_Last_Name string
-	Application_Status string
-	Job_Position_Name string
-	Department_Name string
-	User_Interviewee_Name string	
-	Application_Status_ID int
-	//Interview_Date string
-	//Interview_Time string
-	
-}
+
 
