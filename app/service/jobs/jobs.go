@@ -11,10 +11,10 @@ var db = Database.Connect()
 
 
 func GetJobPosition(ctx *fiber.Ctx) error {
-	job_position := model_jobs.JobPosition{}
-	job_position_array := make([]model_jobs.JobPosition, 0)
+	job_position := model_jobs.Jobs_List{}
+	job_position_array := make([]model_jobs.Jobs_List, 0)
 
-	db_query := "CALL fetch_jobs_position"
+	db_query := "CALL fetch_job_positionS"
 
 	db_response, err := db.Query(db_query)
 
@@ -26,9 +26,9 @@ func GetJobPosition(ctx *fiber.Ctx) error {
 		db_response.Scan(
 			&job_position.Position_ID,
 			&job_position.Position_Name,
-			&job_position.Department_ID,
-			&job_position.Position_Status,
+			&job_position.Department_Name,
 			&job_position.Available_Slot,
+			&job_position.Position_Status,
 		)
 		job_position_array = append(job_position_array, job_position)
 	}
@@ -43,11 +43,10 @@ func AddJobPosition(ctx *fiber.Ctx) error {
 		panic(err.Error())
 	}
 
-	db_query := `CALL add_job_slot(?,?,?,?)`
+	db_query := `CALL add_job_slot(?,?,?)`
 	db_response, err := db.Query(db_query, 
 	job_position.Position_Name,
 	job_position.Department_ID,
-	job_position.Position_Status,
 	job_position.Available_Slot,
 	)
 
@@ -56,7 +55,9 @@ func AddJobPosition(ctx *fiber.Ctx) error {
 	}
 	defer db_response.Close()
 
-	return ctx.Status(fiber.StatusOK).JSON(job_position)
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"msg": "Jobs Added Successfully",
+	})
 }
 
 func UpdateJobPosition(ctx *fiber.Ctx) error {
@@ -81,7 +82,6 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 		panic(err.Error())
 	}
 	defer db_response.Close()
-
 
 	return ctx.Status(fiber.StatusOK).SendString("Position Updated")
 }

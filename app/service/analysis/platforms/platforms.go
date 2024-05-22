@@ -21,9 +21,7 @@ func GetPlatformData(ctx *fiber.Ctx) error {
 	defer db_response.Close()
 	for db_response.Next() {
 		db_response.Scan(
-			&posting_platform_model.Platform_ID,
-			&posting_platform_model.Platform_Name,
-			&posting_platform_model.Platform_Count)
+			&posting_platform_model.Platforms)
 		posting_platform_array = append(posting_platform_array, *posting_platform_model)
 	}
 

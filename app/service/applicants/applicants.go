@@ -1,7 +1,6 @@
 package applicants
 
 import (
-	"fmt"
 	Database "hrms-api/app/database"
 	model_applicants "hrms-api/app/model/applicants"
 
@@ -11,7 +10,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 var db = Database.Connect()
-
 
 func PostApplicantsData(ctx *fiber.Ctx) error {
 	created_at := time.Now().Format("2006-01-02 15:04:05") 
@@ -102,7 +100,6 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Application_CreatedAt,
 		)
 		applicants_data_array = append(applicants_data_array, *applicants_data_model)
-		fmt.Print(applicants_data_array)
 	}
 	
 	defer db_response.Close()

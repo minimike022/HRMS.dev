@@ -22,7 +22,6 @@ func ManagerApplicantsData(ctx *fiber.Ctx) error {
 	if err != nil {
 		panic(err.Error())
 	}
-
 	for db_response.Next() {
 		db_response.Scan(
 			&applicants_data_model.Applicant_ID,
@@ -51,7 +50,6 @@ func ManagerApplicantsData(ctx *fiber.Ctx) error {
 			&applicants_data_model.Applicant_Portfolio_Link,
 	)
 			applicants_data_array = append(applicants_data_array, *applicants_data_model)
-
 	}
 	defer db_response.Close()
 

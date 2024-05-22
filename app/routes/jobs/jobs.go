@@ -8,7 +8,9 @@ import (
 )
 
 func SetupJobs(app *fiber.App) {
-	app.Get("/jobs", jwtvalidate.ValidateAccessToken ,jobs.GetJobPosition)
+	app.Get("/jobs" ,jobs.GetJobPosition)
 	app.Patch("/jobs/position/update/:id", jwtvalidate.ValidateAccessToken ,jobs.UpdateJobPosition)
-	app.Post("/jobs/position/add", jwtvalidate.ValidateAccessToken, jobs.AddJobPosition)
+	app.Post("/jobs/add", jobs.AddJobPosition)
 }
+
+// , jwtvalidate.ValidateAccessToken
