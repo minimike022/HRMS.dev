@@ -1,18 +1,16 @@
-package jobs
+package sjobs
 
 import (
 	Database "hrms-api/app/database"
-	model_jobs "hrms-api/app/model/jobs"
-
-	"github.com/gofiber/fiber/v2"
+	mjobs "hrms-api/app/model/jobs"
 )
 
 var db = Database.Connect()
 
 
-func GetJobPosition(ctx *fiber.Ctx) error {
-	job_position := model_jobs.Jobs_List{}
-	job_position_array := make([]model_jobs.Jobs_List, 0)
+func FetchJobs() ([]mjobs.Jobs_List, error) {
+	job_position := mjobs.Jobs_List{}
+	job_position_array := make([]mjobs.Jobs_List, 0)
 
 	db_query := "CALL fetch_job_positionS"
 
@@ -33,17 +31,14 @@ func GetJobPosition(ctx *fiber.Ctx) error {
 		job_position_array = append(job_position_array, job_position)
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(job_position_array)
+	return job_position_array, err
 }
 
-func AddJobPosition(ctx *fiber.Ctx) error {
-	job_position := model_jobs.JobPosition{}
-	err := ctx.BodyParser(&job_position)
-	if err != nil {
-		panic(err.Error())
-	}
+func AddJobs(job_position mjobs.JobPosition) error {
+	
 
 	db_query := `CALL add_job_slot(?,?,?)`
+
 	db_response, err := db.Query(db_query, 
 	job_position.Position_Name,
 	job_position.Department_ID,
@@ -53,20 +48,13 @@ func AddJobPosition(ctx *fiber.Ctx) error {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	defer db_response.Close()
 
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"msg": "Jobs Added Successfully",
-	})
+	return nil 
 }
 
-func UpdateJobPosition(ctx *fiber.Ctx) error {
-	job_position_id := ctx.Params("id")
-	job_position := model_jobs.JobPosition{}
-	err := ctx.BodyParser(&job_position)
-	if err != nil {
-		panic(err.Error())
-	}
+func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 
 	db_query := `CALL update_job_position(?,?,?,?,?)`
 
@@ -76,6 +64,7 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 	job_position.Department_ID, 
 	job_position.Position_Status,
 	job_position.Available_Slot,
+
 	)
 
 	if err != nil {
@@ -83,5 +72,5 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 	}
 	defer db_response.Close()
 
-	return ctx.Status(fiber.StatusOK).SendString("Position Updated")
+	return nil
 }

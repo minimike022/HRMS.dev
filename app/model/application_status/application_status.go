@@ -1,4 +1,4 @@
-package application_status
+package mapplication_status
 
 type ApplicantStatus struct {
 	Status_ID int

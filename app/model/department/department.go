@@ -1,4 +1,4 @@
-package model_department
+package mdepartment
 
 type Department struct {
 	Department_ID int `json:"department_id"`

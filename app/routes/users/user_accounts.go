@@ -2,7 +2,7 @@ package husers
 
 import (
 	"github.com/gofiber/fiber/v2"
-	user_accounts "hrms-api/app/service/users/accounts"
+	caccounts "hrms-api/app/controller/users/accounts"
 	login "hrms-api/app/service/users/login"
 	jwtvalidate "hrms-api/app/service/jwt/validate"
 	validaterole "hrms-api/app/service/users/validate"
@@ -10,7 +10,7 @@ import (
 
 func SetupUserAccounts(app *fiber.App) {
 	app.Post("/user/login", login.Login)
-	app.Post("/user/accounts/add", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, user_accounts.AddUserAccount)
-	app.Get("/users/accounts", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, user_accounts.GetUserAccounts)
-	app.Patch("/users/accounts/update/:id", jwtvalidate.ValidateAccessToken, user_accounts.UpdateAccountStatus)
+	app.Post("/user/accounts/add", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, caccounts.AddUserAccounts)
+	app.Get("/users/accounts", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, caccounts.FetchUserAccounts)
+	app.Patch("/users/accounts/update/:id", jwtvalidate.ValidateAccessToken, caccounts.UpdateUserAccounts)
 }

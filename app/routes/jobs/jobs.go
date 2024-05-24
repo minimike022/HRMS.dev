@@ -2,15 +2,15 @@ package hjobs
 
 
 import (
-	jobs "hrms-api/app/service/jobs"
+	cjobs "hrms-api/app/controller/jobs"
 	"github.com/gofiber/fiber/v2"
 	jwtvalidate "hrms-api/app/service/jwt/validate"
 )
 
 func SetupJobs(app *fiber.App) {
-	app.Get("/jobs" ,jobs.GetJobPosition)
-	app.Patch("/jobs/position/update/:id", jwtvalidate.ValidateAccessToken ,jobs.UpdateJobPosition)
-	app.Post("/jobs/add", jobs.AddJobPosition)
+	app.Get("/jobs" ,cjobs.GetJobPosition)
+	app.Patch("/jobs/position/update/:id", jwtvalidate.ValidateAccessToken ,cjobs.UpdateJobPosition)
+	app.Post("/jobs/add", cjobs.AddJobPosition)
 }
 
 // , jwtvalidate.ValidateAccessToken

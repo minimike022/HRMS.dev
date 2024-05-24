@@ -1,4 +1,4 @@
-package model_jobs
+package mjobs
 
 type JobPosition struct {
 	Position_ID int `json:"position_id"`

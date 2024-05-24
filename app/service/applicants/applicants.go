@@ -1,24 +1,15 @@
-package applicants
+package sapplicants
 
 import (
 	Database "hrms-api/app/database"
-	model_applicants "hrms-api/app/model/applicants"
+	mapplicants "hrms-api/app/model/applicants"
 
 	//jwt "hrms-api/app/service/jwt"
-	"time"
-
-	"github.com/gofiber/fiber/v2"
 )
 var db = Database.Connect()
 
-func PostApplicantsData(ctx *fiber.Ctx) error {
-	created_at := time.Now().Format("2006-01-02 15:04:05") 
-	applicants_data_model := model_applicants.ApplicantsData{}
-	err := ctx.BodyParser(&applicants_data_model)
-
-	if err != nil {
-		panic(err.Error())
-	}
+func AddApplicants(createdAt string, applicants_data_model mapplicants.ApplicantsData) error {
+	
 	dbQuery := `CALL add_applicants(?, ?, ?, ?, ?, ?, ?, ?, ?, 
 				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
@@ -46,20 +37,21 @@ func PostApplicantsData(ctx *fiber.Ctx) error {
 		applicants_data_model.Ref_Email,
 		applicants_data_model.Applicant_CV,
 		applicants_data_model.Applicant_Portfolio_Link,
-		created_at)
+		createdAt)
+
 	if err != nil {
 		panic(err.Error())
 	}
 
 	defer dbData.Close()
 
-	return ctx.Status(fiber.StatusOK).SendString("Added to database!")
+	return nil
 }
 
-func GetApplicantsData(ctx *fiber.Ctx) error {
+func GetApplicantsData() ([]mapplicants.ApplicantsData, error) {
 
-	applicants_data_model := new(model_applicants.ApplicantsData)
-	applicants_data_array := make([]model_applicants.ApplicantsData, 0)
+	applicants_data_model := new(mapplicants.ApplicantsData)
+	applicants_data_array := make([]mapplicants.ApplicantsData, 0)
 
 	db_query := "CALL fetch_applicants_data"
 
@@ -105,7 +97,5 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 	defer db_response.Close()
 
 
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"applicants_data": applicants_data_array,
-	})
+	return applicants_data_array, nil
 }

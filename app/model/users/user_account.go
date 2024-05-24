@@ -1,4 +1,4 @@
-package model_users
+package musers
 
 type UserAccount struct {
 	Account_ID int

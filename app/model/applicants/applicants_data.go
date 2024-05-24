@@ -1,4 +1,4 @@
-package model_applicants
+package mapplicants
 
 type ApplicantsData struct {
 	Applicant_ID   int `json:"applicant_id"`

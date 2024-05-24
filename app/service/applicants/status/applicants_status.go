@@ -1,27 +1,24 @@
-package applicantsStatus
+package sapplication_status
 
 import (
-	"fmt"
 	Database "hrms-api/app/database"
-	application_status "hrms-api/app/model/application_status"
-
-	"github.com/gofiber/fiber/v2"
+	mapplication_status "hrms-api/app/model/application_status"
 )
 
 var db = Database.Connect()
 
-func GetApplicationStatus(ctx *fiber.Ctx) error {
-	application_status_array := make([]application_status.Application_Status, 0)
-
+func FetchStatus() ([]mapplication_status.Application_Status, error) {
+	application_status_array := make([]mapplication_status.Application_Status, 0)
 	query := `CALL fetch_application_status`
 
 	db_response, err := Database.Connect().Query(query)
+
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for db_response.Next() {
-		application_status_model := application_status.Application_Status{}
+		application_status_model := mapplication_status.Application_Status{}
 		db_response.Scan(
 			&application_status_model.Status_ID,
 			&application_status_model.First_Name,
@@ -35,30 +32,23 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 			&application_status_model.Interview_Time,
 		)
 		application_status_array = append(application_status_array, application_status_model)
-		fmt.Println(application_status_model)
 	}
+
 	defer db_response.Close()
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"application_status": application_status_array,
-	})
+
+
+	return application_status_array, nil
 }
 
-func UpdateApplicationStatus(ctx *fiber.Ctx) error {
-	application_id := ctx.Params("id")
-	application_status_model := application_status.ApplicantStatus{}
-
-	err := ctx.BodyParser(&application_status_model)
-
-	if err != nil {
-		panic(err.Error())
-	}
-
+func UpdateStatus(application_id string, application_status mapplication_status.ApplicantStatus) error {
+	
 	db_query := "CALL update_application_status(?,?,?,?,?)"
 
-	_, err = db.Query(db_query, application_id, application_status_model.Application_Status_ID, application_status_model.User_Interviewee_ID, application_status_model.Interview_Date, application_status_model.Interview_Time)
+	_, err := db.Query(db_query, application_id, application_status.Application_Status_ID, application_status.User_Interviewee_ID, application_status.Interview_Date, application_status.Interview_Time)
+
 	if err != nil {
 		panic(err.Error())
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON("Application Status Updated")
+	return nil
 }

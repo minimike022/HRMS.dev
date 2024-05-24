@@ -1,17 +1,15 @@
-package departments
+package sdepartments
 
 import (
 	Database "hrms-api/app/database"
-	model_department "hrms-api/app/model/department"
-
-	"github.com/gofiber/fiber/v2"
+	mdepartment "hrms-api/app/model/department"
 )
 
 var db = Database.Connect()
 
-func GetDepartments(ctx *fiber.Ctx) error {
-	departments_model := new(model_department.Department)
-	department_array := make([]model_department.Department, 0)
+func FetchDepartments() ([]mdepartment.Department, error) {
+	departments_model := new(mdepartment.Department)
+	department_array := make([]mdepartment.Department, 0)
 
 	query := `CALL fetch_departments`
 	
@@ -30,7 +28,5 @@ func GetDepartments(ctx *fiber.Ctx) error {
 		department_array = append(department_array, *departments_model)
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"departments": department_array,
-	})
+	return department_array, nil
 }
