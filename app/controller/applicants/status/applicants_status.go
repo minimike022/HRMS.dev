@@ -7,6 +7,20 @@ import (
 )
 
 func GetApplicationStatus(ctx *fiber.Ctx) error {
+	search_query := ctx.Query("q")
+
+	if len(search_query) > 0 {
+		application_status, err := sapplication_status.SearchStatus(search_query)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"application_status": application_status, 
+		})
+	}
+
 	application_status, err := sapplication_status.FetchStatus()
 
 	if err != nil {
@@ -37,7 +51,4 @@ func UpdateApplicationStatus(ctx *fiber.Ctx) error {
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"msg": "Status Updated",
 	})
-
-
-
 }

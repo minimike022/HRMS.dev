@@ -48,14 +48,13 @@ func AddApplicants(createdAt string, applicants_data_model mapplicants.Applicant
 	return nil
 }
 
-func GetApplicantsData() ([]mapplicants.ApplicantsData, error) {
-
+func GetApplicantsData(applicants_id string) ([]mapplicants.ApplicantsData, error) {
 	applicants_data_model := new(mapplicants.ApplicantsData)
 	applicants_data_array := make([]mapplicants.ApplicantsData, 0)
 
-	db_query := "CALL fetch_applicants_data"
+	db_query := `CALL fetch_applicants_data(?)`
 
-	db_response, err := db.Query(db_query)
+	db_response, err := db.Query(db_query, applicants_id)
 	if err != nil {
 		panic(err.Error())
 	}

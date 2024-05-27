@@ -9,6 +9,22 @@ import (
 )
 
 func GetJobPosition(ctx *fiber.Ctx) error {
+	search_query := ctx.Query("q")
+
+	
+
+	if len(search_query) > 0 {
+		jobs_list, err := cjobs.SearchJobs(search_query)
+
+		if err != nil {
+			panic(err.Error())
+		}
+	
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"job_positions": jobs_list,
+		})
+	}
+
 	jobs_list, err := cjobs.FetchJobs()
 
 	if err != nil {

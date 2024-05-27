@@ -11,6 +11,7 @@ type ApplicantStatus struct {
 
 type Application_Status struct {
 	Status_ID int `json:"application_status_id"`
+	Applicant_ID int `json:"applicant_id"`
 	First_Name string `json:"first_name"`
 	Middle_Name string `json:"middle_name"`
 	Last_Name string `json:"last_name"`

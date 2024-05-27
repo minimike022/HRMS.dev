@@ -11,8 +11,8 @@ import (
 func SetupApplication(app *fiber.App) {
 	app.Post("/applicants/add", capplicants.AddApplicantsData)
 	app.Patch("/application/status_update/:id", capplicants_status.UpdateApplicationStatus)
-	app.Get("/applicants", capplicants.GetApplicantsData)
+	app.Get("/applicants/:app_id", capplicants.GetApplicantsData)
 	app.Get("/application/status", capplicants_status.GetApplicationStatus)
 }
 //, jwtvalidate.ValidateRefreshToken, validaterole.ValidateAdmin,
-//, jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR 
+//, jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR

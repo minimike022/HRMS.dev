@@ -29,7 +29,9 @@ func AddApplicantsData(ctx *fiber.Ctx) error {
 
 
 func GetApplicantsData(ctx *fiber.Ctx) error {
-	applicants_data_array, err := sapplicants.GetApplicantsData()
+	applicant_id := ctx.Params("app_id")
+
+	applicants_data_array, err := sapplicants.GetApplicantsData(applicant_id)
 
 	if err != nil {
 		panic(err.Error())

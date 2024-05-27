@@ -12,8 +12,21 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func FetchUsers(ctx *fiber.Ctx) error {
+	users , err := saccounts.FetchUsers()
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+	"users": users,
+	})
+	
+}
+
 func FetchUserAccounts(ctx *fiber.Ctx) error {
-	user_accounts, err := saccounts.FetchUser()
+	user_accounts, err := saccounts.FetchUserAccounts()
 	if err != nil {
 		log.Fatal(err.Error())
 	}

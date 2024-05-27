@@ -8,7 +8,7 @@ import (
 var db = Database.Connect()
 
 
-func FetchUser() ([]musers.UserAccount, error) {
+func FetchUserAccounts() ([]musers.UserAccount, error) {
 	user_accounts_data := musers.UserAccount{}
 	user_accounts_array := make([]musers.UserAccount,0)
 	//Calling Procedured Query
@@ -38,6 +38,31 @@ func FetchUser() ([]musers.UserAccount, error) {
 	defer db_response.Close()
 	
 	return user_accounts_array, nil
+}
+
+func FetchUsers() ([]musers.Users, error) {
+	users := musers.Users{}
+	users_array := make([]musers.Users, 0)
+
+	query := "CALL fetch_users"
+
+	db_response, err := db.Query(query)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for db_response.Next() {
+		db_response.Scan(
+			&users.Account_ID,
+			&users.User_Name,
+			&users.User_Role,
+			&users.Department_ID,
+		)
+		users_array = append(users_array, users)
+	}
+
+	return users_array, nil
 }
 
 func AddUser(user_accounts musers.UserAccount, user_hashed_password string) error {
