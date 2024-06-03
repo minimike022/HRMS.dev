@@ -98,3 +98,4 @@ func GetApplicantsData(applicants_id string) ([]mapplicants.ApplicantsData, erro
 
 	return applicants_data_array, nil
 }
+

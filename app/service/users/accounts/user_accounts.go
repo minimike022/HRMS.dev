@@ -57,10 +57,12 @@ func FetchUsers() ([]musers.Users, error) {
 			&users.Account_ID,
 			&users.User_Name,
 			&users.User_Role,
-			&users.Department_ID,
+			&users.Department_Name,
 		)
 		users_array = append(users_array, users)
 	}
+
+	defer db_response.Close()
 
 	return users_array, nil
 }

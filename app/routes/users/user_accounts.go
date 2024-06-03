@@ -9,6 +9,7 @@ import (
 )
 
 func SetupUserAccounts(app *fiber.App) {
+	app.Get("/users", caccounts.FetchUsers)
 	app.Post("/user/login", login.Login)
 	app.Post("/user/accounts/add", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, caccounts.AddUserAccounts)
 	app.Get("/users/accounts", jwtvalidate.ValidateAccessToken, validaterole.ValidateAdmin, caccounts.FetchUserAccounts)

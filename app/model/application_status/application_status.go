@@ -22,3 +22,8 @@ type Application_Status struct {
 	Interview_Date string `json:"interview_date"`
 	Interview_Time string `json:"interview_time"`
 }
+
+type Status_List struct {
+	Application_Status_ID int `json:"app_status_id"`
+	Application_Status_Name string `json:"app_status_name"`
+}

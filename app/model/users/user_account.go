@@ -13,8 +13,8 @@ type UserAccount struct {
 }
 
 type Users struct {
-	Account_ID int
-	User_Role string
-	User_Name string
-	Department_ID int
+	Account_ID int `json:"account_id"`
+	User_Role string `json:"user_role"`
+	User_Name string `json:"user_name"`
+	Department_Name string `json:"department_name"`
 }

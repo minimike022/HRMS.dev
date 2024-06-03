@@ -32,5 +32,13 @@ type ApplicantsData struct {
 	Application_CreatedAt string
 }
 
+type NewApplicants struct {
+	Applicant_ID int `json:"app_id"`
+	First_Name string `json:"first_name"`
+	Last_Name string  `json:"last_name"`
+	Extension_Name string `json:"ext_name"`
+	Application_Date string  `json:"app_date"`
+}
+
 
 

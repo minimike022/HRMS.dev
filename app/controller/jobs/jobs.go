@@ -2,30 +2,13 @@ package cjobs
 
 import (
 	mjobs "hrms-api/app/model/jobs"
-	cjobs "hrms-api/app/service/jobs"
 	sjobs "hrms-api/app/service/jobs"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetJobPosition(ctx *fiber.Ctx) error {
-	search_query := ctx.Query("q")
-
-	
-
-	if len(search_query) > 0 {
-		jobs_list, err := cjobs.SearchJobs(search_query)
-
-		if err != nil {
-			panic(err.Error())
-		}
-	
-		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-			"job_positions": jobs_list,
-		})
-	}
-
-	jobs_list, err := cjobs.FetchJobs()
+	jobs_list, err := sjobs.FetchJobs()
 
 	if err != nil {
 		panic(err.Error())
@@ -60,12 +43,11 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 	job_position := mjobs.JobPosition{}
 
 	err := ctx.BodyParser(&job_position)
-	
 	if err != nil {
 		panic(err.Error())
 	}
 
-	err = cjobs.UpdateJobs(job_position_id, job_position)
+	err = sjobs.UpdateJobs(job_position_id, job_position)
 
 	if err != nil {
 		panic(err.Error())
@@ -76,4 +58,30 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 		"msg": "Update Succesfully!",
 	})
 
+}
+
+func SearchJobs(ctx *fiber.Ctx) error {
+	search_query := ctx.Query("q")
+	
+	if len(search_query) > 0 {
+		jobs_list, err := sjobs.SearchJobs(search_query)
+
+		if err != nil {
+			panic(err.Error())
+		}
+	
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"job_positions": jobs_list,
+		})
+	}
+
+	jobs_list, err := sjobs.FetchJobs()
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"job_positions": jobs_list,
+	})
 }

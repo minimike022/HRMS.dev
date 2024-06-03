@@ -1,6 +1,7 @@
 package sapplication_status
 
 import (
+	"fmt"
 	Database "hrms-api/app/database"
 	mapplication_status "hrms-api/app/model/application_status"
 )
@@ -80,10 +81,34 @@ func SearchStatus(search_query string) ([]mapplication_status.Application_Status
 			&application_status_model.Interview_Time,
 		)
 		application_status_array = append(application_status_array, application_status_model)
+		fmt.Println(application_status_array)
 	}
 
 	defer db_response.Close()
 
 
 	return application_status_array, nil
+}
+
+func FetchList() ([]mapplication_status.Status_List, error){
+	application_status_array := make([]mapplication_status.Status_List,0)
+	application_status_model := mapplication_status.Status_List{}
+
+	query := `CALL fetch_status_list`
+
+	db_response,err := db.Query(query)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for db_response.Next() {
+		db_response.Scan(
+			&application_status_model.Application_Status_ID,
+			&application_status_model.Application_Status_Name,
+		)
+		application_status_array = append(application_status_array, application_status_model)
+	}
+
+	return application_status_array, nil
+
 }

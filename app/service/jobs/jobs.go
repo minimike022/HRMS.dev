@@ -31,6 +31,9 @@ func FetchJobs() ([]mjobs.Jobs_List, error) {
 		)
 		job_position_array = append(job_position_array, job_position)
 	}
+
+	defer db_response.Close()
+
 	return job_position_array, err
 }
 
@@ -55,8 +58,9 @@ func AddJobs(job_position mjobs.JobPosition) error {
 }
 
 func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
-
 	db_query := `CALL update_job_position(?,?,?,?,?)`
+
+	fmt.Println(job_position)
 
 	db_response, err := db.Query(db_query,
 	job_position_id, 
@@ -64,7 +68,6 @@ func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 	job_position.Department_ID, 
 	job_position.Position_Status,
 	job_position.Available_Slot,
-
 	)
 
 	if err != nil {
@@ -78,8 +81,6 @@ func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 func SearchJobs (search_query string) ([]mjobs.Jobs_List, error) {
 	search_result := make([]mjobs.Jobs_List, 0)
 	search_model := mjobs.Jobs_List{}
-
-	fmt.Print(search_query)
 
 	query := `CALL search_jobs(?)`
 
@@ -98,8 +99,9 @@ func SearchJobs (search_query string) ([]mjobs.Jobs_List, error) {
 			&search_model.Position_Status,
 		)
 		search_result = append(search_result, search_model)
-		fmt.Println(search_result)
 	}
+
+	defer db_response.Close()
 
 	return search_result, nil
 

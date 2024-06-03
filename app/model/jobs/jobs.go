@@ -15,4 +15,3 @@ type Jobs_List struct {
 	Available_Slot int `json:"available_slot"`
 	Position_Status string `json:"position_status"`
 }
-

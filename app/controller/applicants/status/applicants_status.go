@@ -1,8 +1,10 @@
 package capplication_status
 
 import (
-	sapplication_status "hrms-api/app/service/applicants/status"
+	"fmt"
 	mapplication_status "hrms-api/app/model/application_status"
+	sapplication_status "hrms-api/app/service/applicants/status"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -34,6 +36,7 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 
 func UpdateApplicationStatus(ctx *fiber.Ctx) error {
 	application_id := ctx.Params("id")
+	fmt.Println(application_id)
 	application_status_model := mapplication_status.ApplicantStatus{}
 
 	err := ctx.BodyParser(&application_status_model)
@@ -41,7 +44,7 @@ func UpdateApplicationStatus(ctx *fiber.Ctx) error {
 	if err != nil {
 		panic(err.Error())
 	}
-
+	fmt.Println(application_status_model)
 	err = sapplication_status.UpdateStatus(application_id, application_status_model)
 
 	if err != nil {
@@ -52,3 +55,16 @@ func UpdateApplicationStatus(ctx *fiber.Ctx) error {
 		"msg": "Status Updated",
 	})
 }
+
+func FetchStatusList(ctx *fiber.Ctx) error {
+	status_list, err := sapplication_status.FetchList()
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status_list": status_list,
+	})
+
+} 

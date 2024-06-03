@@ -28,5 +28,7 @@ func FetchDepartments() ([]mdepartment.Department, error) {
 		department_array = append(department_array, *departments_model)
 	}
 
+	defer db_response.Close()
+
 	return department_array, nil
 }
