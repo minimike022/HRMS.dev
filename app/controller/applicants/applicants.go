@@ -1,10 +1,11 @@
 package capplicants
 
 import (
-	"github.com/gofiber/fiber/v2"
 	mapplicants "hrms-api/app/model/applicants"
 	sapplicants "hrms-api/app/service/applicants"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func AddApplicantsData(ctx *fiber.Ctx) error {
@@ -39,5 +40,17 @@ func GetApplicantsData(ctx *fiber.Ctx) error {
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 		"Applicants": applicants_data_array,
+	})
+}
+
+func FetchNewApplicantsData(ctx *fiber.Ctx) error {
+	new_applicants_data, err := sapplicants.FetchNewApplicants()
+	
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"new_applicants": new_applicants_data,
 	})
 }

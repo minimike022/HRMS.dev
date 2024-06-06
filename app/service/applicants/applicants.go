@@ -3,7 +3,6 @@ package sapplicants
 import (
 	Database "hrms-api/app/database"
 	mapplicants "hrms-api/app/model/applicants"
-
 	//jwt "hrms-api/app/service/jwt"
 )
 var db = Database.Connect()
@@ -97,5 +96,30 @@ func GetApplicantsData(applicants_id string) ([]mapplicants.ApplicantsData, erro
 
 
 	return applicants_data_array, nil
+}
+
+func FetchNewApplicants() ([]mapplicants.NewApplicants, error) {
+	new_app := mapplicants.NewApplicants{}
+	new_app_array := make([]mapplicants.NewApplicants, 0)
+	query := "CALL fetch_new_applicants"
+	db_response, err := db.Query(query)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for db_response.Next() {
+		db_response.Scan(
+			&new_app.Applicant_ID,
+			&new_app.First_Name,
+			&new_app.Last_Name,
+			&new_app.Extension_Name,
+			&new_app.Job_Position,
+			&new_app.Application_Date,
+		)
+		new_app_array = append(new_app_array, new_app)
+	}
+
+	return new_app_array, nil
 }
 

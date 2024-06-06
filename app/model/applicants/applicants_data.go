@@ -37,6 +37,7 @@ type NewApplicants struct {
 	First_Name string `json:"first_name"`
 	Last_Name string  `json:"last_name"`
 	Extension_Name string `json:"ext_name"`
+	Job_Position string `json:"job_position"`
 	Application_Date string  `json:"app_date"`
 }
 

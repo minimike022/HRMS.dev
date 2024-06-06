@@ -10,6 +10,7 @@ import (
 func SetupApplication(app *fiber.App) {
 	app.Post("/applicants/add", capplicants.AddApplicantsData)
 	app.Get("/applicants/:app_id", capplicants.GetApplicantsData)
+	app.Get("/new_applicants", capplicants.FetchNewApplicantsData)
 }
 //, jwtvalidate.ValidateRefreshToken, validaterole.ValidateAdmin,
 //, jwtvalidate.ValidateRefreshToken, validaterole.ValidateHR
