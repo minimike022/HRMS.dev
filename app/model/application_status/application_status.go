@@ -17,6 +17,7 @@ type Application_Status struct {
 	Last_Name string `json:"last_name"`
 	Extension_Name string `json:"extension_name"`
 	Position_Name string `json:"position_name"`
+	Interviewee_ID int `json:"interviewee_id"`
 	Interviewee_Name string `json:"interviewee_name"`
 	Application_Status string `json:"application_status"`
 	Interview_Date string `json:"interview_date"`

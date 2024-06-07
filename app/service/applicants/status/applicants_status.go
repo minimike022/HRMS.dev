@@ -29,11 +29,13 @@ func FetchStatus() ([]mapplication_status.Application_Status, error) {
 			&application_status_model.Extension_Name,
 			&application_status_model.Position_Name,
 			&application_status_model.Application_Status,
+			&application_status_model.Interviewee_ID,
 			&application_status_model.Interviewee_Name,
 			&application_status_model.Interview_Date,
 			&application_status_model.Interview_Time,
 		)
 		application_status_array = append(application_status_array, application_status_model)
+		fmt.Println(application_status_array)
 	}
 
 	defer db_response.Close()
@@ -76,6 +78,7 @@ func SearchStatus(search_query string) ([]mapplication_status.Application_Status
 			&application_status_model.Extension_Name,
 			&application_status_model.Position_Name,
 			&application_status_model.Application_Status,
+			&application_status_model.Interviewee_ID,
 			&application_status_model.Interviewee_Name,
 			&application_status_model.Interview_Date,
 			&application_status_model.Interview_Time,
