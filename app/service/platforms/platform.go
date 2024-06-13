@@ -1,6 +1,7 @@
 package splatformslist
 
 import (
+	"fmt"
 	Database "hrms-api/app/database"
 	mplatformslist "hrms-api/app/model/platforms"
 )
@@ -25,6 +26,7 @@ func FetchPlatformsList() ([]mplatformslist.Platform_List, error) {
 			&platform_list_model.Platform_Name,
 		)
 		platform_list_array = append(platform_list_array, platform_list_model)
+		fmt.Println(platform_list_array)
 	}
 
 	return platform_list_array, nil

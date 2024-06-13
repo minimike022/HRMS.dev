@@ -26,6 +26,5 @@ func GetPlatform() ([]mplatform.PostingPlatform,error) {
 		posting_platform_array = append(posting_platform_array, *posting_platform_model)
 	}
 
-
 	return posting_platform_array, nil
 }
