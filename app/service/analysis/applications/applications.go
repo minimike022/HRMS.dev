@@ -1,4 +1,4 @@
-package sprogress
+package sapplication
 
 import (
 	"fmt"
@@ -32,4 +32,30 @@ func FetchProgress() ([]manalysis.ProgresStatus, error) {
 
 
 	return progress_status_array, nil
+}
+
+
+func FetchDate() ([]manalysis.ApplicantsDate, error) {
+	applicants_data_model := new(manalysis.ApplicantsDate)
+	applicants_data_array := make([]manalysis.ApplicantsDate, 0)
+
+	db_query := `CALL fetch_all_applicants_data`
+
+	db_response, err := db.Query(db_query)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for db_response.Next() {
+		db_response.Scan(	
+			&applicants_data_model.Position_Name,
+			&applicants_data_model.Application_CreatedAt,
+		)
+		applicants_data_array = append(applicants_data_array, *applicants_data_model)
+	}
+	
+	defer db_response.Close()
+
+
+	return applicants_data_array, nil
 }

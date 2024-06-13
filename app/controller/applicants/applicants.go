@@ -29,6 +29,8 @@ func AddApplicantsData(ctx *fiber.Ctx) error {
 }
 
 
+
+
 func GetApplicantsData(ctx *fiber.Ctx) error {
 	applicant_id := ctx.Params("app_id")
 

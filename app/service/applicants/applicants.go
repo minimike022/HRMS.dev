@@ -47,6 +47,7 @@ func AddApplicants(createdAt string, applicants_data_model mapplicants.Applicant
 	return nil
 }
 
+
 func GetApplicantsData(applicants_id string) ([]mapplicants.ApplicantsData, error) {
 	applicants_data_model := new(mapplicants.ApplicantsData)
 	applicants_data_array := make([]mapplicants.ApplicantsData, 0)

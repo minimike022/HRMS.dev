@@ -7,4 +7,5 @@ import (
 
 func SetupApplicationProgress(app *fiber.App) {
 	app.Get("/analysis/progress", cprogress.FetchApplicationsProgress)
+	app.Get("/analysis/date", cprogress.GetApplicantsDate)
 } 
