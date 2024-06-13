@@ -8,6 +8,7 @@ import (
 	hdepartments "hrms-api/app/routes/department"
 	hstatus "hrms-api/app/routes/applicants/status"
 	happlication "hrms-api/app/routes/analysis/applications"
+	hplatformslist "hrms-api/app/routes/platform"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -18,6 +19,7 @@ func SetupRoutes(app *fiber.App) {
 	husers.SetupUserAccounts(app)
 	hdepartments.SetupDepartment(app)
 	hstatus.SetupApplicationStatus(app)
+	hplatformslist.SetupPlatformList(app)
 	happlication.SetupApplicationProgress(app)
 }
 

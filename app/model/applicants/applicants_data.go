@@ -1,5 +1,9 @@
 package mapplicants
 
+import (
+	"encoding/json"
+)
+
 type ApplicantsData struct {
 	Applicant_ID   int `json:"applicant_id"`
 	Position_ID    int `json:"position_id"`
@@ -21,7 +25,7 @@ type ApplicantsData struct {
 	Shift_Sched string `json:"shift_sched"`
 	Work_Report string `json:"work_report"`
 	Work_Site_Location string `json:"work_site_location"`
-	Platforms string `json:"platforms"`
+	Platforms json.RawMessage `json:"platforms"`
 	Ref_Full_Name string `json:"ref_full_name"`
 	Ref_Company string `json:"ref_company"`
 	Ref_Position string `json:"ref_position"`
