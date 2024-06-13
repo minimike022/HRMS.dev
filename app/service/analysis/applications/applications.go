@@ -3,13 +3,13 @@ package sapplication
 import (
 	"fmt"
 	Database "hrms-api/app/database"
-	manalysis "hrms-api/app/model/analysis"
+	mapplication "hrms-api/app/model/analysis/applications"
 )
 var db = Database.Connect()
 
-func FetchProgress() ([]manalysis.ProgresStatus, error) {
-	progress_status_model := manalysis.ProgresStatus{}
-	progress_status_array := make([]manalysis.ProgresStatus,0)
+func FetchProgress() ([]mapplication.ProgresStatus, error) {
+	progress_status_model := mapplication.ProgresStatus{}
+	progress_status_array := make([]mapplication.ProgresStatus,0)
 
 	query := `CALL analysis_progress`
 
@@ -35,9 +35,9 @@ func FetchProgress() ([]manalysis.ProgresStatus, error) {
 }
 
 
-func FetchDate() ([]manalysis.ApplicantsDate, error) {
-	applicants_data_model := new(manalysis.ApplicantsDate)
-	applicants_data_array := make([]manalysis.ApplicantsDate, 0)
+func FetchDate() ([]mapplication.ApplicantsDate, error) {
+	applicants_data_model := new(mapplication.ApplicantsDate)
+	applicants_data_array := make([]mapplication.ApplicantsDate, 0)
 
 	db_query := `CALL fetch_all_applicants_data`
 

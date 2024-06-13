@@ -1,17 +1,15 @@
-package platforms
+package splatforms
 
 import (
 	Database "hrms-api/app/database"
-	model_platform "hrms-api/app/model/platform"
-
-	"github.com/gofiber/fiber/v2"
+	mplatform "hrms-api/app/model/analysis/platforms"
 )
 
 var db = Database.Connect()
 
-func GetPlatformData(ctx *fiber.Ctx) error {
-	posting_platform_model := new(model_platform.PostingPlatform)
-	posting_platform_array := make([]model_platform.PostingPlatform,0)
+func GetPlatform() ([]mplatform.PostingPlatform,error) {
+	posting_platform_model := new(mplatform.PostingPlatform)
+	posting_platform_array := make([]mplatform.PostingPlatform,0)
 
 	db_query := `CALL fetch_posting_data()`
 	db_response, err := db.Query(db_query)
@@ -25,5 +23,5 @@ func GetPlatformData(ctx *fiber.Ctx) error {
 		posting_platform_array = append(posting_platform_array, *posting_platform_model)
 	}
 
-	return ctx.Status(fiber.StatusOK).JSON(posting_platform_array)
+	return posting_platform_array, nil
 }

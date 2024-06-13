@@ -1,4 +1,4 @@
-package happlication
+package happlicants
 
 import (
 	capplicants "hrms-api/app/controller/applicants"
