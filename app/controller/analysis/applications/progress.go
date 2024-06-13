@@ -24,7 +24,7 @@ func GetApplicantsDate(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
-		"All_Applicants": applicants_data_array,
+		"application_date": applicants_data_array,
 	})
 }
 
