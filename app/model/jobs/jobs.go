@@ -11,6 +11,7 @@ type JobPosition struct {
 type Jobs_List struct {
 	Position_ID int `json:"position_id"`
 	Position_Name string `json:"position_name"`
+	Department_ID int `json:"department_id"`
 	Department_Name string `json:"department_name"`
 	Available_Slot int `json:"available_slot"`
 	Position_Status string `json:"position_status"`

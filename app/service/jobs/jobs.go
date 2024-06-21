@@ -25,6 +25,7 @@ func FetchJobs() ([]mjobs.Jobs_List, error) {
 		db_response.Scan(
 			&job_position.Position_ID,
 			&job_position.Position_Name,
+			&job_position.Department_ID,
 			&job_position.Department_Name,
 			&job_position.Available_Slot,
 			&job_position.Position_Status,
@@ -94,6 +95,7 @@ func SearchJobs (search_query string) ([]mjobs.Jobs_List, error) {
 		db_response.Scan(
 			&search_model.Position_ID,
 			&search_model.Position_Name,
+			&search_model.Department_ID,
 			&search_model.Department_Name,
 			&search_model.Available_Slot,
 			&search_model.Position_Status,
