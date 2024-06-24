@@ -1,7 +1,6 @@
 package cjobs
 
 import (
-	"fmt"
 	mjobs "hrms-api/app/model/jobs"
 	sjobs "hrms-api/app/service/jobs"
 
@@ -10,7 +9,6 @@ import (
 
 func GetJobPosition(ctx *fiber.Ctx) error {
 	count := sjobs.CountJobs()
-	fmt.Print(count)
 	jobs_list, err := sjobs.FetchJobs()
 
 	if err != nil {
@@ -18,6 +16,7 @@ func GetJobPosition(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+		"count": count,
 		"job_positions": jobs_list,
 	})
 }
