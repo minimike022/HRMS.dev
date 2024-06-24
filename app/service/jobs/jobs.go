@@ -22,13 +22,13 @@ func CountJobs() (jobs_count int) {
 	return count
 }
 
-func FetchJobs() ([]mjobs.Jobs_List, error) {
+func FetchJobs(page int, offset int) ([]mjobs.Jobs_List, error) {
 	job_position := mjobs.Jobs_List{}
 	job_position_array := make([]mjobs.Jobs_List, 0)
 
-	db_query := "CALL fetch_job_positions"
+	db_query := "CALL fetch_job_positions(?, ?)"
 
-	db_response, err := db.Query(db_query)
+	db_response, err := db.Query(db_query, page, offset)
 
 	if err != nil {
 		panic(err.Error())
