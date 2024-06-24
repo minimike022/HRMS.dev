@@ -1,14 +1,24 @@
 package cjobs
 
 import (
+	"fmt"
 	mjobs "hrms-api/app/model/jobs"
 	sjobs "hrms-api/app/service/jobs"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetJobPosition(ctx *fiber.Ctx) error {
 	count := sjobs.CountJobs()
+
+	page, _ := strconv.Atoi(ctx.Query("page","1"))
+	limit, _ := strconv.Atoi(ctx.Query("limit"))
+
+	offset := (page - 1) * limit
+
+	fmt.Println(offset)
+
 	jobs_list, err := sjobs.FetchJobs()
 
 	if err != nil {
