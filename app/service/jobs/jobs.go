@@ -8,6 +8,19 @@ import (
 
 var db = Database.Connect()
 
+func CountJobs() (jobs_count int) {
+	var count int
+	query := `CALL count_jobs`
+	db_response, _ := db.Query(query)
+
+	for db_response.Next() {
+		db_response.Scan(
+			&count,
+		)
+	}
+	
+	return count
+}
 
 func FetchJobs() ([]mjobs.Jobs_List, error) {
 	job_position := mjobs.Jobs_List{}
