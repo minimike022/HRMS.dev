@@ -22,6 +22,19 @@ func CountJobs() (jobs_count int) {
 	return count
 }
 
+func SearchCount(search_query string) (search_count int) {
+	var count int
+	query := `CALL count_search_jobs(?)`
+	db_response, _ := db.Query(query,search_query)
+	for db_response.Next() {
+		db_response.Scan(
+			&count,
+		)
+	}
+
+	return count
+}
+
 func FetchJobs(page int, offset int) ([]mjobs.Jobs_List, error) {
 	job_position := mjobs.Jobs_List{}
 	job_position_array := make([]mjobs.Jobs_List, 0)
@@ -92,13 +105,13 @@ func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 	return nil
 }
 
-func SearchJobs (search_query string) ([]mjobs.Jobs_List, error) {
+func SearchJobs (search_query string, page int, offset int) ([]mjobs.Jobs_List, error) {
 	search_result := make([]mjobs.Jobs_List, 0)
 	search_model := mjobs.Jobs_List{}
 
-	query := `CALL search_jobs(?)`
+	query := `CALL search_jobs(?,?,?)`
 
-	db_response, err := db.Query(query, search_query)
+	db_response, err := db.Query(query, search_query, page, offset)
 
 	if err != nil {
 		panic(err.Error())

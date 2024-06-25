@@ -70,28 +70,29 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 }
 
 func SearchJobs(ctx *fiber.Ctx) error {
-	count := sjobs.CountJobs()
-
+	
+	search_query := ctx.Query("q")
 	page, _ := strconv.Atoi(ctx.Query("page","1"))
 	limit, _ := strconv.Atoi(ctx.Query("limit"))
 
 	offset := (page - 1) * limit
 
-	search_query := ctx.Query("q")
+	count := sjobs.SearchCount(search_query)
 	
 	if len(search_query) > 0 {
-		jobs_list, err := sjobs.SearchJobs(search_query)
+		jobs_list, err := sjobs.SearchJobs(search_query, offset, limit)
 
 		if err != nil {
 			panic(err.Error())
 		}
 	
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"count": count,
 			"job_positions": jobs_list,
 		})
 	}
 
-	jobs_list, err := sjobs.FetchJobs(page, offset)
+	jobs_list, err := sjobs.FetchJobs(offset, limit)
 
 	if err != nil {
 		panic(err.Error())
