@@ -28,6 +28,7 @@ func FetchPlatformsList() ([]mplatformslist.Platform_List, error) {
 		platform_list_array = append(platform_list_array, platform_list_model)
 		fmt.Println(platform_list_array)
 	}
+	defer db_response.Close()
 
 	return platform_list_array, nil
 	

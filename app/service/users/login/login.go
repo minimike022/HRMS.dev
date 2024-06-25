@@ -37,6 +37,7 @@ func Login(ctx *fiber.Ctx) error {
 			&login_account_model.User_Role, 
 			&login_account_model.User_Name)
 	}
+	defer db_response.Close()
 
 	err = util.CompareHash(store_password, login_account_model.Password)
 	if err != nil {

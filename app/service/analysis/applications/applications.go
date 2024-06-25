@@ -29,7 +29,7 @@ func FetchProgress() ([]mapplication.ProgresStatus, error) {
 
 		fmt.Println(progress_status_array)
 	}
-
+	defer db_response.Close()
 
 	return progress_status_array, nil
 }

@@ -18,6 +18,7 @@ func CountJobs() (jobs_count int) {
 			&count,
 		)
 	}
+	defer db_response.Close()
 	
 	return count
 }
@@ -31,6 +32,7 @@ func SearchCount(search_query string) (search_count int) {
 			&count,
 		)
 	}
+	defer db_response.Close()
 
 	return count
 }
