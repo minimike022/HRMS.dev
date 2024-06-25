@@ -8,11 +8,26 @@ import (
 
 var db = Database.Connect()
 
-func FetchStatus() ([]mapplication_status.Application_Status, error) {
-	application_status_array := make([]mapplication_status.Application_Status, 0)
-	query := `CALL fetch_application_status`
+func CountStatus() (count int) {
+	var status_count int
+	query := `CALL count_application_status`
+	db_response, _ := db.Query(query)
 
-	db_response, err := db.Query(query)
+	for db_response.Next() {
+		db_response.Scan(
+			&status_count,
+		)
+	}
+	defer db_response.Close()
+
+	return status_count
+} 
+
+func FetchStatus(page_limit int, offset int) ([]mapplication_status.Application_Status, error) {
+	application_status_array := make([]mapplication_status.Application_Status, 0)
+	query := `CALL fetch_application_status(?, ?)`
+
+	db_response, err := db.Query(query, offset, page_limit)
 
 	if err != nil {
 		panic(err.Error())
@@ -57,11 +72,11 @@ func UpdateStatus(application_id string, application_status mapplication_status.
 	return nil
 }
 
-func SearchStatus(search_query string) ([]mapplication_status.Application_Status, error) {
+func SearchStatus(search_query string, page_limit int, offset int) ([]mapplication_status.Application_Status, error) {
 	application_status_array := make([]mapplication_status.Application_Status, 0)
-	query := `CALL search_app_status(?)`
+	query := `CALL search_app_status(?,?,?)`
 
-	db_response, err := db.Query(query, search_query)
+	db_response, err := db.Query(query, search_query, offset, page_limit)
 
 	if err != nil {
 		panic(err.Error())
@@ -88,7 +103,6 @@ func SearchStatus(search_query string) ([]mapplication_status.Application_Status
 	}
 
 	defer db_response.Close()
-
 
 	return application_status_array, nil
 }
