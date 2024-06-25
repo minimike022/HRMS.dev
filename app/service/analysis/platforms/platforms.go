@@ -19,12 +19,11 @@ func GetPlatform() ([]mplatform.PostingPlatform,error) {
 		panic(err.Error())
 	}
 
-	defer db_response.Close()
 	for db_response.Next() {
 		db_response.Scan(
 			&posting_platform_model.Platforms)
 		posting_platform_array = append(posting_platform_array, *posting_platform_model)
 	}
-
+	defer db_response.Close()
 	return posting_platform_array, nil
 }

@@ -112,6 +112,8 @@ func FetchList() ([]mapplication_status.Status_List, error){
 		application_status_array = append(application_status_array, application_status_model)
 	}
 
+	defer db_response.Close()
+
 	return application_status_array, nil
 
 }

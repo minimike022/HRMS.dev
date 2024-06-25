@@ -120,6 +120,7 @@ func FetchNewApplicants() ([]mapplicants.NewApplicants, error) {
 		)
 		new_app_array = append(new_app_array, new_app)
 	}
+	defer db_response.Close()
 
 	return new_app_array, nil
 }
