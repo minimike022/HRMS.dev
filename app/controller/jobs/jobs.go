@@ -1,6 +1,7 @@
 package cjobs
 
 import (
+	"fmt"
 	mjobs "hrms-api/app/model/jobs"
 	sjobs "hrms-api/app/service/jobs"
 	"strconv"
@@ -9,14 +10,20 @@ import (
 )
 
 func GetJobPosition(ctx *fiber.Ctx) error {
+
 	count := sjobs.CountJobs()
+	
+	sort_col := ctx.Query("sort_col")
+	sort_order := ctx.Query("sort_order")
 
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 	limit, _ := strconv.Atoi(ctx.Query("limit", "0"))
 
 	offset := (page - 1) * limit
 
-	jobs_list, err := sjobs.FetchJobs(offset, limit)
+	fmt.Print(offset)
+
+	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())
@@ -72,6 +79,10 @@ func UpdateJobPosition(ctx *fiber.Ctx) error {
 func SearchJobs(ctx *fiber.Ctx) error {
 	
 	search_query := ctx.Query("q")
+
+	sort_col := ctx.Query("sort_col")
+	sort_order := ctx.Query("sort_order")
+
 	page, _ := strconv.Atoi(ctx.Query("page","1"))
 	limit, _ := strconv.Atoi(ctx.Query("limit"))
 
@@ -80,11 +91,7 @@ func SearchJobs(ctx *fiber.Ctx) error {
 	count := sjobs.SearchCount(search_query)
 	
 	if len(search_query) > 0 {
-		jobs_list, err := sjobs.SearchJobs(search_query, offset, limit)
-
-		if err != nil {
-			panic(err.Error())
-		}
+		jobs_list:= sjobs.SearchJobs(search_query, offset, limit, sort_col, sort_order)
 	
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
 			"count": count,
@@ -92,7 +99,7 @@ func SearchJobs(ctx *fiber.Ctx) error {
 		})
 	}
 
-	jobs_list, err := sjobs.FetchJobs(offset, limit)
+	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())
