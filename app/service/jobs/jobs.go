@@ -1,7 +1,6 @@
 package sjobs
 
 import (
-	"fmt"
 	Database "hrms-api/app/database"
 	mjobs "hrms-api/app/model/jobs"
 )
@@ -19,14 +18,14 @@ func CountJobs() (jobs_count int) {
 		)
 	}
 	defer db_response.Close()
-	
+
 	return count
 }
 
 func SearchCount(search_query string) (search_count int) {
 	var count int
 	query := `CALL count_search_jobs(?)`
-	db_response, _ := db.Query(query,search_query)
+	db_response, _ := db.Query(query, search_query)
 	for db_response.Next() {
 		db_response.Scan(
 			&count,
@@ -37,14 +36,20 @@ func SearchCount(search_query string) (search_count int) {
 	return count
 }
 
-func FetchJobs(page int, offset int) ([]mjobs.Jobs_List, error) {
+func FetchJobs(offset int, limit int, sort_col string, sort_order string) ([]mjobs.Jobs_List, error) {
 	job_position := mjobs.Jobs_List{}
 	job_position_array := make([]mjobs.Jobs_List, 0)
 
-	db_query := "CALL fetch_job_positions(?, ?)"
+	query := `SELECT JP.position_id , JP.position_name,JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP
+INNER JOIN department as DP ON JP.department_id = DP.department_id `
+	if sort_col != "" && sort_order != "" {
+		query += ` ORDER BY ` + sort_col + ` ` + sort_order + ` `
+	}
 
-	db_response, err := db.Query(db_query, page, offset)
+	query += `LIMIT ?, ?`
 
+	stmt, _ := db.Prepare(query)
+	db_response, err := stmt.Query(offset, limit)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -67,14 +72,13 @@ func FetchJobs(page int, offset int) ([]mjobs.Jobs_List, error) {
 }
 
 func AddJobs(job_position mjobs.JobPosition) error {
-	
 
 	db_query := `CALL add_job_slot(?,?,?)`
 
-	db_response, err := db.Query(db_query, 
-	job_position.Position_Name,
-	job_position.Department_ID,
-	job_position.Available_Slot,
+	db_response, err := db.Query(db_query,
+		job_position.Position_Name,
+		job_position.Department_ID,
+		job_position.Available_Slot,
 	)
 
 	if err != nil {
@@ -83,20 +87,18 @@ func AddJobs(job_position mjobs.JobPosition) error {
 
 	defer db_response.Close()
 
-	return nil 
+	return nil
 }
 
 func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 	db_query := `CALL update_job_position(?,?,?,?,?)`
 
-	fmt.Println(job_position)
-
 	db_response, err := db.Query(db_query,
-	job_position_id, 
-	job_position.Position_Name, 
-	job_position.Department_ID, 
-	job_position.Position_Status,
-	job_position.Available_Slot,
+		job_position_id,
+		job_position.Position_Name,
+		job_position.Department_ID,
+		job_position.Position_Status,
+		job_position.Available_Slot,
 	)
 
 	if err != nil {
@@ -107,13 +109,24 @@ func UpdateJobs(job_position_id string, job_position mjobs.JobPosition) error {
 	return nil
 }
 
-func SearchJobs (search_query string, page int, offset int) ([]mjobs.Jobs_List, error) {
+func SearchJobs(search_query string, offset int, limit int, sort_col string, sort_order string) ([]mjobs.Jobs_List) {
 	search_result := make([]mjobs.Jobs_List, 0)
 	search_model := mjobs.Jobs_List{}
 
-	query := `CALL search_jobs(?,?,?)`
+	query := `SELECT JP.position_id , JP.position_name,JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP
+INNER JOIN department as DP ON JP.department_id = DP.department_id `
 
-	db_response, err := db.Query(query, search_query, page, offset)
+	query += `WHERE JP.position_name LIKE ? `
+
+	if sort_col != "" && sort_order != "" {
+		query += ` ORDER BY ` + sort_col + ` ` + sort_order + ` `
+	}
+
+	query += `LIMIT ?, ?`
+
+	stmt, _ := db.Prepare(query)
+
+	db_response, err := stmt.Query("%"+search_query+"%", offset, limit)
 
 	if err != nil {
 		panic(err.Error())
@@ -133,6 +146,6 @@ func SearchJobs (search_query string, page int, offset int) ([]mjobs.Jobs_List, 
 
 	defer db_response.Close()
 
-	return search_result, nil
+	return search_result
 
 }
