@@ -11,6 +11,10 @@ import (
 
 func GetApplicationStatus(ctx *fiber.Ctx) error {
 	count := sapplication_status.CountStatus()
+
+	sort_col := ctx.Query("sort_col")
+	sort_order := ctx.Query("sort_order")
+
 	page, _ := strconv.Atoi(ctx.Query("page"))
 	limit, _ := strconv.Atoi(ctx.Query("limit"))
 
@@ -18,18 +22,20 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 	search_query := ctx.Query("q")
 
 	if len(search_query) > 0 {
-		application_status, err := sapplication_status.SearchStatus(search_query, limit, offset)
+		count = sapplication_status.SearchCount(search_query)
+		application_status, err := sapplication_status.SearchStatus(search_query, limit, offset, sort_col, sort_order)
 
 		if err != nil {
 			panic(err.Error())
 		}
 
 		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"count": count,
 			"application_status": application_status, 
 		})
 	}
 
-	application_status, err := sapplication_status.FetchStatus(limit, offset)
+	application_status, err := sapplication_status.FetchStatus(limit, offset, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())
