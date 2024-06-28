@@ -1,7 +1,6 @@
 package cjobs
 
 import (
-	"fmt"
 	mjobs "hrms-api/app/model/jobs"
 	sjobs "hrms-api/app/service/jobs"
 	"strconv"
@@ -12,16 +11,14 @@ import (
 func GetJobPosition(ctx *fiber.Ctx) error {
 
 	count := sjobs.CountJobs()
-	
-	sort_col := ctx.Query("sort_col")
-	sort_order := ctx.Query("sort_order")
+
+	sort_col := `JP.available_slot`
+	sort_order := `ASC`
 
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 	limit, _ := strconv.Atoi(ctx.Query("limit", "0"))
 
 	offset := (page - 1) * limit
-
-	fmt.Print(offset)
 
 	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
 

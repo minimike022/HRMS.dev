@@ -1,6 +1,7 @@
 package sjobs
 
 import (
+	"fmt"
 	Database "hrms-api/app/database"
 	mjobs "hrms-api/app/model/jobs"
 )
@@ -37,16 +38,19 @@ func SearchCount(search_query string) (search_count int) {
 }
 
 func FetchJobs(offset int, limit int, sort_col string, sort_order string) ([]mjobs.Jobs_List, error) {
+	fmt.Println("Hello")
 	job_position := mjobs.Jobs_List{}
 	job_position_array := make([]mjobs.Jobs_List, 0)
 
 	query := `SELECT JP.position_id , JP.position_name,JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP
 INNER JOIN department as DP ON JP.department_id = DP.department_id `
+
 	if sort_col != "" && sort_order != "" {
 		query += ` ORDER BY ` + sort_col + ` ` + sort_order + ` `
 	}
 
-	query += `LIMIT ?, ?`
+	query += `LIMIT ?, ?;`
+	fmt.Println(query)
 
 	stmt, _ := db.Prepare(query)
 	db_response, err := stmt.Query(offset, limit)

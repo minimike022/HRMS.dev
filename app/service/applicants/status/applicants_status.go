@@ -58,7 +58,9 @@ APS.position_id = JP.position_id
 LEFT JOIN application_status_list as ASL ON APS.application_status_id = ASL.application_status_id
 ` + ` `
 
-	query += `ORDER BY` + ` ` + sort_col + ` ` + sort_order + ` `
+	if sort_col != "" && sort_order != "" {
+		query += `ORDER BY` + ` ` + sort_col + ` ` + sort_order + ` `
+	}
 
 	query += `LIMIT ?, ?;`
 	fmt.Println()

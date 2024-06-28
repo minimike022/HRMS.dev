@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2024 at 10:54 AM
+-- Generation Time: Jun 28, 2024 at 09:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -111,6 +111,18 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `count_jobs` ()   BEGIN
 SELECT count(*) FROM job_position;
 END$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `count_search_applicants` (IN `search_query` VARCHAR(255))   BEGIN
+SET @search := CONCAT('%',search_query,'%');
+SELECT count(*) FROM application_status as APS
+LEFT JOIN applicants_data as AD ON 
+APS.applicant_id = AD.applicant_id
+LEFT JOIN user_accounts as UA ON APS.user_interviewee_id = UA.account_id
+LEFT JOIN job_position as JP ON 
+APS.position_id = JP.position_id
+LEFT JOIN application_status_list as ASL ON APS.application_status_id = ASL.application_status_id
+WHERE AD.first_name LIKE @search OR AD.last_name LIKE @search OR AD.extension_name LIKE @search OR JP.position_name LIKE @search;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `count_search_jobs` (IN `search_query` VARCHAR(255))   BEGIN
 SET @search := CONCAT('%',search_query,'%');
 SELECT count(*) FROM job_position as JP
@@ -192,9 +204,10 @@ SELECT * FROM department;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_job_positions` (IN `page` INT, IN `offset` INT)   BEGIN
+
 SELECT JP.position_id , JP.position_name, JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP 
 INNER JOIN department as DP ON JP.department_id = DP.department_id
-ORDER BY cast(JP.available_slot as INT) DESC LIMIT page, offset;
+ORDER BY JP.position_name ASC LIMIT page, offset;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_new_applicants` ()   BEGIN
