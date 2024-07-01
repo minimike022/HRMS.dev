@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2024 at 09:56 AM
+-- Generation Time: Jul 01, 2024 at 08:59 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -25,7 +25,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_applicants` (IN `position_id` INT(3), IN `first_name` VARCHAR(255), IN `middle_name` VARCHAR(255), IN `last_name` VARCHAR(255), IN `extension_name` VARCHAR(255), IN `birthdate` DATE, IN `age` INT(3), IN `present_address` VARCHAR(255), IN `highest_education` VARCHAR(255), IN `email_address` VARCHAR(255), IN `facebook_link` VARCHAR(255), IN `bpo_exp` VARCHAR(255), IN `shift_sched` VARCHAR(255), IN `work_report` VARCHAR(255), IN `work_site_location` VARCHAR(255), IN `platforms` VARCHAR(255), IN `ref_full_name` VARCHAR(255), IN `ref_company` VARCHAR(255), IN `ref_position` VARCHAR(255), IN `ref_contact_num` VARCHAR(255), IN `ref_email` VARCHAR(255), IN `applicant_cv` VARCHAR(255), IN `applicant_portfolio_link` VARCHAR(255), IN `createdAt` VARCHAR(255))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_applicants` (IN `position_id` INT(3), IN `first_name` VARCHAR(255), IN `middle_name` VARCHAR(255), IN `last_name` VARCHAR(255), IN `extension_name` VARCHAR(255), IN `birthdate` DATE, IN `age` INT(3), IN `present_address` VARCHAR(255), IN `highest_education` VARCHAR(255), IN `degree_course` VARCHAR(255), IN `school_name` VARCHAR(255), IN `mobile_number` VARCHAR(255), IN `email_address` VARCHAR(255), IN `facebook_link` VARCHAR(255), IN `bpo_exp` VARCHAR(255), IN `shift_sched` VARCHAR(255), IN `work_report` VARCHAR(255), IN `work_site_location` VARCHAR(255), IN `platforms` VARCHAR(255), IN `ref_full_name` VARCHAR(255), IN `ref_company` VARCHAR(255), IN `ref_position` VARCHAR(255), IN `ref_contact_num` VARCHAR(255), IN `ref_email` VARCHAR(255), IN `applicant_cv` VARCHAR(255), IN `applicant_portfolio_link` VARCHAR(255), IN `createdAt` VARCHAR(255))   BEGIN
 INSERT INTO applicants_data (
 position_id, 
 first_name, 
@@ -36,6 +36,9 @@ birthdate,
 age, 
 present_address, 
 highest_education, 
+degree_course,
+school_name,
+mobile_number,
 email_address, 
 facebook_link, 
 bpo_exp, 
@@ -62,6 +65,9 @@ birthdate,
 age, 
 present_address, 
 highest_education, 
+degree_course,
+school_name,
+mobile_number,
 email_address, 
 facebook_link, 
 bpo_exp, 
@@ -75,8 +81,8 @@ ref_position,
 ref_contact_num, 
 ref_email, 
 applicant_cv, 
-applicant_portfolio_link,createdAt
-);
+applicant_portfolio_link,
+createdAt);
 
 
 SET @applicants_id := last_insert_id();
@@ -175,7 +181,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_applicants_data` (IN `applica
     
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_application_status` (IN `offset` INT, IN `page_limit` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_application_status` ()   BEGIN
 SELECT APS.status_id,
 AD.applicant_id,
 AD.first_name, 
@@ -194,8 +200,7 @@ LEFT JOIN user_accounts as UA ON APS.user_interviewee_id = UA.account_id
 LEFT JOIN job_position as JP ON 
 APS.position_id = JP.position_id
 LEFT JOIN application_status_list as ASL ON APS.application_status_id = ASL.application_status_id
-ORDER BY AD.first_name ASC
-LIMIT offset, page_limit;
+ORDER BY AD.first_name ASC;
 
 END$$
 
@@ -203,11 +208,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_departments` ()   BEGIN
 SELECT * FROM department;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_job_positions` (IN `page` INT, IN `offset` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_job_positions` ()   BEGIN
 
 SELECT JP.position_id , JP.position_name, JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP 
 INNER JOIN department as DP ON JP.department_id = DP.department_id
-ORDER BY JP.position_name ASC LIMIT page, offset;
+ORDER BY JP.position_name ASC;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `fetch_new_applicants` ()   BEGIN
@@ -362,7 +367,8 @@ INSERT INTO `applicants_data` (`applicant_id`, `first_name`, `middle_name`, `las
 (40, 'Michaedwa', '', 'Eduardo', 'Jr', '2002-09-23', 22, 'La Torre', '', 'minimike@gmail.com', 'minimike@gmail.com', 3, 'yes', 'yes', 'yes', 'yes', 'College', '', '', '[\"MotivIT Website\", \"LinkedIn\", \"Others\"]', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', '', '2024-06-19 10:50:17'),
 (41, 'Samantha', '', 'Eduardo', 'Jr', '2002-09-23', 22, 'La Torre', '', 'minimike@gmail.com', 'minimike@gmail.com', 3, 'yes', 'yes', 'yes', 'yes', 'College', '', '', '[\"MotivIT Website\", \"LinkedIn\", \"Others\"]', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', '', '2024-06-25 15:37:01'),
 (42, 'Samantha', '', 'Purificacion', 'Jr', '2002-09-23', 22, 'La Torre', '', 'minimike@gmail.com', 'minimike@gmail.com', 1, 'yes', 'yes', 'yes', 'yes', 'College', '', '', '[\"MotivIT Website\", \"LinkedIn\", \"Others\"]', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', '', '2024-06-25 15:44:08'),
-(43, 'AAASamantha', '', 'Purificacion', 'Jr', '2002-09-23', 22, 'La Torre', '', 'minimike@gmail.com', 'minimike@gmail.com', 1, 'yes', 'yes', 'yes', 'yes', 'College', '', '', '[\"MotivIT Website\", \"LinkedIn\", \"Others\"]', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', '', '2024-06-25 15:56:07');
+(43, 'AAASamantha', '', 'Purificacion', 'Jr', '2002-09-23', 22, 'La Torre', '', 'minimike@gmail.com', 'minimike@gmail.com', 1, 'yes', 'yes', 'yes', 'yes', 'College', '', '', '[\"MotivIT Website\", \"LinkedIn\", \"Others\"]', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', 'dwa', '', '2024-06-25 15:56:07'),
+(44, 'Michael', 'Calahi', 'Eduardo', 'III', '2024-07-09', -1, 'La Torre Talavera', '09568321827', 'minimike156@gmail.com', 'facebook.com/minimike022', 7, 'Yes', 'No', 'Yes', 'No', 'College Undergraduate', 'BSIT', 'Central Luzon State University', '[\"MotivIT Website\",\"Facebook\",\"LinkedIn\"]', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'history_log.png', 'adwadaw', '2024-07-02 00:38:43');
 
 -- --------------------------------------------------------
 
@@ -385,14 +391,15 @@ CREATE TABLE `application_status` (
 --
 
 INSERT INTO `application_status` (`status_id`, `applicant_id`, `position_id`, `user_interviewee_id`, `interview_date`, `interview_time`, `application_status_id`) VALUES
-(16, 36, 3, 0, '0000-00-00', '', 2),
+(16, 36, 3, 2, '2024-07-10', '06:52', 6),
 (17, 37, 3, 0, '0000-00-00', '', 2),
 (18, 38, 3, 0, '0000-00-00', '', 1),
-(19, 39, 3, 0, '0000-00-00', '', 1),
+(19, 39, 3, 2, '2024-06-30', '01:34', 5),
 (20, 40, 3, 0, '0000-00-00', '', 1),
 (21, 41, 3, 0, '0000-00-00', '', 1),
 (22, 42, 1, 0, '0000-00-00', '', 1),
-(23, 43, 1, 0, '0000-00-00', '', 3);
+(23, 43, 1, 0, '0000-00-00', '', 1),
+(24, 44, 7, 0, '0000-00-00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -413,10 +420,11 @@ INSERT INTO `application_status_list` (`application_status_id`, `application_sta
 (1, 'Received'),
 (2, 'Screening'),
 (3, 'Shortlisted'),
-(4, 'Initial Interview'),
-(5, 'Interview with HR'),
-(6, 'Interview with Hiring Manager'),
-(7, 'Onboarding');
+(4, 'Onboarding'),
+(5, 'Rejected'),
+(6, 'Initial Interview'),
+(7, 'Interview with HR'),
+(8, 'Interview with Hiring Manager');
 
 -- --------------------------------------------------------
 
@@ -461,11 +469,11 @@ CREATE TABLE `job_position` (
 --
 
 INSERT INTO `job_position` (`position_id`, `position_name`, `department_id`, `position_status`, `available_slot`) VALUES
-(1, 'Customer Service Representative', 1, 'Open', 2),
+(1, 'Customer Service Representative', 1, 'Inactive', 2),
 (2, 'dwa', 1, 'Open', 2),
 (3, 'Project Management Associate', 2, 'Open', 0),
 (4, 'QC Analyst', 3, 'Urgent', 5),
-(5, 'Support Specialist T1', 1, 'Open', 10),
+(5, 'Support Specialist T1', 1, 'Urgent', 10),
 (6, 'Support Specialist T2', 5, 'Open', 4),
 (7, 'Support Specialist T3', 5, 'Urgent', 3),
 (8, 'Web Developer', 3, 'Open', 1),
@@ -473,7 +481,8 @@ INSERT INTO `job_position` (`position_id`, `position_name`, `department_id`, `po
 (21, 'Software Developer', 3, 'Open', 4),
 (22, 'Engineer', 5, 'Open', 2),
 (23, 'Gengineer', 2, 'Urgent', 10),
-(24, 'dwa', 2, 'Open', 2);
+(24, 'dwa', 2, 'Open', 2),
+(25, 'daw', 2, 'Open', 2);
 
 -- --------------------------------------------------------
 
@@ -581,13 +590,13 @@ ALTER TABLE `user_accounts`
 -- AUTO_INCREMENT for table `applicants_data`
 --
 ALTER TABLE `applicants_data`
-  MODIFY `applicant_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `applicant_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `application_status`
 --
 ALTER TABLE `application_status`
-  MODIFY `status_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `status_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `application_status_list`
@@ -605,7 +614,7 @@ ALTER TABLE `department`
 -- AUTO_INCREMENT for table `job_position`
 --
 ALTER TABLE `job_position`
-  MODIFY `position_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `position_id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `job_posting_platform`
