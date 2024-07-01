@@ -20,7 +20,16 @@ func GetJobPosition(ctx *fiber.Ctx) error {
 	
 	offset := (page - 1) * limit
 
-	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
+	if offset == 0 && limit == 0 {
+		jobs_list := sjobs.FetchJobs()
+
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"count": count,
+			"job_positions": jobs_list,
+		})
+	}
+
+	jobs_list, err := sjobs.SortJobs(offset, limit, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())
@@ -96,7 +105,7 @@ func SearchJobs(ctx *fiber.Ctx) error {
 		})
 	}
 
-	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
+	jobs_list, err := sjobs.SortJobs(offset, limit, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())

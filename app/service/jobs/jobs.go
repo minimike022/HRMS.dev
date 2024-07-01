@@ -37,10 +37,37 @@ func SearchCount(search_query string) (search_count int) {
 	return count
 }
 
-func FetchJobs(offset int, limit int, sort_col string, sort_order string) ([]mjobs.Jobs_List, error) {
+func FetchJobs() ([]mjobs.Jobs_List) {
+	job_position := mjobs.Jobs_List{}
+	job_position_array := make([]mjobs.Jobs_List, 0)
+
+	query := `CALL fetch_job_positions()`
+
+	db_response, _ := db.Query(query)
+
+	for db_response.Next() {
+		db_response.Scan(
+			&job_position.Position_ID,
+			&job_position.Position_Name,
+			&job_position.Department_ID,
+			&job_position.Department_Name,
+			&job_position.Available_Slot,
+			&job_position.Position_Status,
+		)
+		job_position_array = append(job_position_array, job_position)
+	}
+
+	defer db_response.Close()
+
+	return job_position_array
+
+}
+
+func SortJobs(offset int, limit int, sort_col string, sort_order string) ([]mjobs.Jobs_List, error) {
 	fmt.Println("Hello")
 	job_position := mjobs.Jobs_List{}
 	job_position_array := make([]mjobs.Jobs_List, 0)
+
 
 	query := `SELECT JP.position_id , JP.position_name,JP.department_id, DP.department_name,  JP.available_slot, JP.position_status FROM job_position as JP
 INNER JOIN department as DP ON JP.department_id = DP.department_id `
@@ -50,7 +77,6 @@ INNER JOIN department as DP ON JP.department_id = DP.department_id `
 	}
 
 	query += `LIMIT ?, ?;`
-	fmt.Println(query)
 
 	stmt, _ := db.Prepare(query)
 	db_response, err := stmt.Query(offset, limit)

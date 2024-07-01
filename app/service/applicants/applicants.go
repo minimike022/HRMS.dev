@@ -10,7 +10,7 @@ var db = Database.Connect()
 func AddApplicants(createdAt string, applicants_data_model mapplicants.ApplicantsData) error {
 	
 	dbQuery := `CALL add_applicants(?, ?, ?, ?, ?, ?, ?, ?, ?, 
-				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+				?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)`
 
 	dbData, err := db.Query(dbQuery,
 		applicants_data_model.Position_ID,
@@ -22,6 +22,9 @@ func AddApplicants(createdAt string, applicants_data_model mapplicants.Applicant
 		applicants_data_model.Age,
 		applicants_data_model.Present_Address,
 		applicants_data_model.Highest_Education,
+		applicants_data_model.Degree_Course,
+		applicants_data_model.School_Name,
+		applicants_data_model.Mobile_Number,
 		applicants_data_model.Email_Address,
 		applicants_data_model.Facebook_Link,
 		applicants_data_model.BPO_Exp,
