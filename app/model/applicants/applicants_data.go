@@ -31,8 +31,8 @@ type ApplicantsData struct {
 	Ref_Position string `json:"ref_position"`
 	Ref_Contact_Num string `json:"ref_contact_num"`
 	Ref_Email  string `json:"ref_email"`
-	Applicant_CV string
-	Applicant_Portfolio_Link string
+	Applicant_CV string `json:"applicant_cv"`
+	Applicant_Portfolio_Link string `json:"applicant_portfolio"`
 	Application_CreatedAt string
 }
 
