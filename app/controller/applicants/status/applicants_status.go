@@ -35,7 +35,16 @@ func GetApplicationStatus(ctx *fiber.Ctx) error {
 		})
 	}
 
-	application_status, err := sapplication_status.FetchStatus(limit, offset, sort_col, sort_order)
+	if page == 0 && limit == 0 {
+		application_status := sapplication_status.FetchStatus()
+			fmt.Println("Hello")
+		return ctx.Status(fiber.StatusOK).JSON(fiber.Map{
+			"application_status": application_status, 
+		})
+
+	}
+
+	application_status, err := sapplication_status.SortStatus(limit, offset, sort_col, sort_order)
 
 	if err != nil {
 		panic(err.Error())

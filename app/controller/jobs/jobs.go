@@ -13,11 +13,11 @@ func GetJobPosition(ctx *fiber.Ctx) error {
 	count := sjobs.CountJobs()
 
 	sort_col := `JP.available_slot`
-	sort_order := `ASC`
+	sort_order := `DESC`
 
 	page, _ := strconv.Atoi(ctx.Query("page", "1"))
 	limit, _ := strconv.Atoi(ctx.Query("limit", "0"))
-
+	
 	offset := (page - 1) * limit
 
 	jobs_list, err := sjobs.FetchJobs(offset, limit, sort_col, sort_order)
